@@ -1,0 +1,70 @@
+- name: pan-os-configuration
+  hosts: firewalls
+  gather_facts: False
+
+  roles:
+    - role: PaloAltoNetworks.paloaltonetworks
+  tasks:
+
+  - name: Set ethernet1/1 as static IP (untrusted)
+    panos_interface:
+      pan_ip_address: '{{ pan_ip_address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
+      if_name: "ethernet1/1"
+      mode: "layer3"
+      ip: ["{pan_untrusted_ip}/24"]
+      enable_dhcp: false
+      operation: "update"
+      commit: False
+
+  - name: Set ethernet1/2 as static IP (trusted)
+    panos_interface:
+      pan_ip_address: '{{ pan_ip_address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
+      if_name: "ethernet1/2"
+      mode: "layer3"
+      ip: ["{pan_trusted_ip}/24"]
+      enable_dhcp: false
+      operation: "update"
+      commit: False
+
+
+
+
+
+  - name: Create route 'ILB'
+    panos_static_route:
+      pan_ip_address: '{{ pan_ip_address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
+      name: 'ILB'
+      destination: '1.1.1.0/24'
+      nexthop: '10.0.0.1'    
+
+  - name: Create route 'AppGW'
+    panos_static_route:
+      pan_ip_address: '{{ pan_ip_address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
+      name: 'AppGW'
+      destination: '1.1.1.0/24'
+      nexthop: '10.0.0.1'   
+
+  - name: Add ase-lib object
+    panos_object:
+      pan_ip_address: '{{ pan_ip_address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
+      addressobject: 'ase-lib'
+      address: '/32'
+      address_type: 'ip-netmask'
+      operation: 'add'
+
+
+  - name: Commit pending firewall changes
+    panos_commit:
+      pan_ip_address: '{{ pan_ip_address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
