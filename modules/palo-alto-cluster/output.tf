@@ -3,12 +3,12 @@ output "vault_uri" {
 }
 
 output "admin_username" {
-  value = "${var.admin_username}"
+  value     = "${var.admin_username}"
   sensitive = true
 }
 
 output "admin_password" {
-  value = "${random_string.admin_password.result}"
+  value     = "${random_string.admin_password.result}"
   sensitive = true
 }
 

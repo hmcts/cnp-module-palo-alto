@@ -1,15 +1,11 @@
-variable "vm0_mgmt_ip" {
-  type    = "string"  
-}
-
-variable "vm1_mgmt_ip" {
-  type    = "string"  
+variable "inventory" {
+  type = "string"
 }
 
 variable "username" {
-  type    = "string"
+  type = "string"
 }
 
 variable "password" {
-  type    = "string"
+  type = "string"
 }

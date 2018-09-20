@@ -6,6 +6,26 @@ variable "env" {
   type = "string"
 }
 
+# variable "vnet_address_space" {
+#   type = "string"
+# }
+
+# variable "mgmt_subnet_address_prefix" {
+#   type = "string"
+# }
+
+# variable "trusted_subnet_address_prefix" {
+#   type = "string"
+# }
+
+# variable "untrusted_subnet_address_prefix" {
+#   type = "string"
+# }
+
+# variable "appgw_subnet_address_prefix" {
+#   type = "string"
+# }
+
 variable "resource_group_location" {
   type    = "string"
   default = "UK South"
@@ -27,51 +47,6 @@ variable "admin_username" {
 variable "allowed_external_ip" {
   type    = "string"
   default = "0.0.0.0/0"
-}
-
-variable "vnet_address_space" {
-  type    = "string"
-  default = "10.0.0.0/16"
-}
-
-variable "mgmt_subnet_address_prefix" {
-  type    = "string"
-  default = "10.0.40.0/24"
-}
-
-variable "mgmt_ip" {
-  type    = "string"
-  default = "10.0.40.4"
-}
-
-variable "trusted_subnet_address_prefix" {
-  type    = "string"
-  default = "10.0.20.0/24"
-}
-
-variable "trusted_ip" {
-  type    = "string"
-  default = "10.0.20.4"
-}
-
-variable "untrusted_subnet_address_prefix" {
-  type    = "string"
-  default = "10.0.10.0/24"
-}
-
-variable "untrusted_ip" {
-  type    = "string"
-  default = "10.0.10.4"
-}
-
-variable "appgw_subnet_address_prefix" {
-  type    = "string"
-  default = "10.0.0.0/24"
-}
-
-variable "appgw_ip" {
-  type    = "string"
-  default = "10.0.0.4"
 }
 
 variable "marketplace_sku" {

@@ -1,14 +1,14 @@
 - name: pan-os-configuration
-  hosts: firewalls
+  hosts: all
   gather_facts: False
 
   roles:
     - role: PaloAltoNetworks.paloaltonetworks
   tasks:
 
-  - name: Set ethernet1/1 as static IP (untrusted)
+  - name: Set ethernet1/1 as static IP (Untrusted)
     panos_interface:
-      pan_ip_address: '{{ pan_ip_address }}'
+      ansible_default_ipv4.address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
       if_name: "ethernet1/1"
@@ -18,9 +18,9 @@
       operation: "update"
       commit: False
 
-  - name: Set ethernet1/2 as static IP (trusted)
+  - name: Set ethernet1/2 as static IP (Trusted)
     panos_interface:
-      pan_ip_address: '{{ pan_ip_address }}'
+      ansible_default_ipv4.address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
       if_name: "ethernet1/2"
@@ -30,13 +30,9 @@
       operation: "update"
       commit: False
 
-
-
-
-
   - name: Create route 'ILB'
     panos_static_route:
-      pan_ip_address: '{{ pan_ip_address }}'
+      ansible_default_ipv4.address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
       name: 'ILB'
@@ -45,7 +41,7 @@
 
   - name: Create route 'AppGW'
     panos_static_route:
-      pan_ip_address: '{{ pan_ip_address }}'
+      ansible_default_ipv4.address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
       name: 'AppGW'
@@ -54,7 +50,7 @@
 
   - name: Add ase-lib object
     panos_object:
-      pan_ip_address: '{{ pan_ip_address }}'
+      ansible_default_ipv4.address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
       addressobject: 'ase-lib'
@@ -62,9 +58,16 @@
       address_type: 'ip-netmask'
       operation: 'add'
 
+  - name: Set NTP
+    panos_mgtconfig:
+      ip_address: '{{ ansible_default_ipv4.address }}'
+      username: '{{admin_username}}'
+      password: '{{admin_password}}'
+      ntp_server_primary: "time.windows.com"
+      timezone: "Europe/London"   
 
   - name: Commit pending firewall changes
     panos_commit:
-      pan_ip_address: '{{ pan_ip_address }}'
+      ansible_default_ipv4.address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
