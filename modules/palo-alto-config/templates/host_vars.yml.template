@@ -1,0 +1,9 @@
+---
+mgmt_ip: "${mgmt_ip}"
+mgmt_address_prefix: "${mgmt_address_prefix}"
+trusted_ip: "${trusted_ip}"
+trusted_address_prefix: "${trusted_address_prefix}"
+untrusted_ip: "${untrusted_ip}"
+untrusted_address_prefix: "${untrusted_address_prefix}"
+username: "${username}"
+password: "${password}"

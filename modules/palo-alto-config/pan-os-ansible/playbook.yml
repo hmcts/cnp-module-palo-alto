@@ -1,5 +1,6 @@
 - name: pan-os-configuration
-  hosts: all
+  hosts: firewall
+  connection: local
   gather_facts: False
 
   roles:
@@ -8,10 +9,11 @@
 
   - name: Set ethernet1/1 (Untrusted)
     panos_interface:
-      ip_address: '{{ ansible_default_ipv4.address }}'
-      username: '{{ pan_username }}'
-      password: '{{ pan_password }}'
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
       if_name: "ethernet1/1"
+      zone_name: "untrusted"
       mode: "layer3"
       enable_dhcp: true
       operation: "update"
@@ -19,10 +21,11 @@
 
   - name: Set ethernet1/2 (Trusted)
     panos_interface:
-      ip_address: '{{ ansible_default_ipv4.address }}'
-      username: '{{ pan_username }}'
-      password: '{{ pan_password }}'
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
       if_name: "ethernet1/2"
+      zone_name: "trusted"
       mode: "layer3"
       enable_dhcp: true
       operation: "update"
@@ -60,14 +63,14 @@
 
   - name: Set NTP
     panos_mgtconfig:
-      ip_address: '{{ ansible_default_ipv4.address }}'
-      username: '{{admin_username}}'
-      password: '{{admin_password}}'
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
       ntp_server_primary: "time.windows.com"
       timezone: "Europe/London"   
 
   - name: Commit pending firewall changes
     panos_commit:
-      ip_address: '{{ ansible_default_ipv4.address }}'
-      username: '{{ pan_username }}'
-      password: '{{ pan_password }}'
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'

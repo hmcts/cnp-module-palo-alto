@@ -1,0 +1,9 @@
+---
+mgmt_ip: "10.100.149.6"
+mgmt_address_prefix: "10.100.149.0/26"
+trusted_ip: "10.100.151.5"
+trusted_address_prefix: "10.100.151.0/26"
+untrusted_ip: "10.100.150.6"
+untrusted_address_prefix: "10.100.150.0/26"
+username: "reform-pan-admin"
+password: "GEcy6dDRXYoJtLzn"
