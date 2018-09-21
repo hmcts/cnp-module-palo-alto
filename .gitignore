@@ -9,10 +9,10 @@
 *.tfvars
 
 # Generated Ansible host_var files
-modules/palo-alto-conf
+pan-os-ansible/host_vars/*
 
 # Generated Ansible inventory
-modules/palo-alto-config/pan-os-ansible/inventory.ini
+pan-os-ansible/inventory.ini
 
 # Ansible playbook replay file
-modules/palo-alto-config/pan-os-ansible/playbook.retry
+pan-os-ansible/playbook.retry

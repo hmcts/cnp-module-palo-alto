@@ -36,14 +36,6 @@ output "untrusted_ips" {
   value = "${azurerm_network_interface.untrusted_nic.*.private_ip_address}"
 }
 
-output "vm_ids" {
-  value = "${azurerm_virtual_machine.pan_vm.*.id}"
-}
-
-output "availability_set_id" {
-  value = "${azurerm_availability_set.availability_set.id}"
-}
-
 output "cluster_size" {
   value = "${var.cluster_size}"
 }
