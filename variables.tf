@@ -6,8 +6,32 @@ variable "env" {
   type = "string"
 }
 
-variable "cluster_size" {
+variable "trusted_vnet_name" {
   type = "string"
+}
+
+variable "trusted_vnet_resource_group" {
+  type = "string"
+}
+
+variable "trusted_vnet_subnet_name" {
+  type = "string"
+}
+
+variable "untrusted_vnet_name" {
+  type = "string"
+}
+
+variable "untrusted_vnet_resource_group" {
+  type = "string"
+}
+
+variable "untrusted_vnet_subnet_name" {
+  type = "string"
+}
+
+variable "cluster_size" {
+  type    = "string"
   default = "2"
 }
 

@@ -203,27 +203,22 @@ resource "azurerm_availability_set" "availability_set" {
   }
 }
 
-data "azurerm_virtual_network" "vnet" {
-  name                = "core-infra-vnet-${var.env}"
-  resource_group_name = "core-infra-${var.env}"
-}
-
 data "azurerm_subnet" "mgmt_subnet" {
   name                 = "palo-mgmt-${var.env}"
   virtual_network_name = "core-infra-vnet-${var.env}"
   resource_group_name  = "core-infra-${var.env}"
 }
 
-data "azurerm_subnet" "untrusted_subnet" {
-  name                 = "palo-untrusted-${var.env}"
-  virtual_network_name = "core-infra-vnet-${var.env}"
-  resource_group_name  = "core-infra-${var.env}"
+data "azurerm_subnet" "trusted_subnet" {
+  name                 = "${var.trusted_vnet_subnet_name}"
+  virtual_network_name = "${var.trusted_vnet_name}"
+  resource_group_name  = "${var.trusted_vnet_resource_group}"
 }
 
-data "azurerm_subnet" "trusted_subnet" {
-  name                 = "palo-trusted-${var.env}"
-  virtual_network_name = "core-infra-vnet-${var.env}"
-  resource_group_name  = "core-infra-${var.env}"
+data "azurerm_subnet" "untrusted_subnet" {
+  name                 = "${var.untrusted_vnet_subnet_name}"
+  virtual_network_name = "${var.untrusted_vnet_name}"
+  resource_group_name  = "${var.untrusted_vnet_resource_group}"
 }
 
 resource "azurerm_network_interface" "mgmt_nic" {
@@ -231,8 +226,6 @@ resource "azurerm_network_interface" "mgmt_nic" {
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
   count               = "${var.cluster_size}"
-
-  depends_on = ["data.azurerm_virtual_network.vnet"]
 
   ip_configuration {
     name                          = "${join("", list("ipconfig", "0"))}"
@@ -249,7 +242,6 @@ resource "azurerm_network_interface" "untrusted_nic" {
   name                = "${var.product}-pan-untrusted-nic-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  depends_on          = ["data.azurerm_virtual_network.vnet"]
   count               = "${var.cluster_size}"
 
   enable_ip_forwarding = true
@@ -270,7 +262,6 @@ resource "azurerm_network_interface" "trusted_nic" {
   name                = "${var.product}-pan-trusted-nic-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  depends_on          = ["data.azurerm_virtual_network.vnet"]
   count               = "${var.cluster_size}"
 
   enable_ip_forwarding = true
@@ -293,12 +284,6 @@ resource "azurerm_virtual_machine" "pan_vm" {
   availability_set_id = "${azurerm_availability_set.availability_set.id}"
   vm_size             = "${var.vm_size}"
   count               = "${var.cluster_size}"
-
-  depends_on = ["azurerm_network_interface.mgmt_nic",
-    "azurerm_network_interface.untrusted_nic",
-    "azurerm_network_interface.trusted_nic",
-    "azurerm_key_vault.key_vault",
-  ]
 
   plan {
     name      = "${var.marketplace_sku}"
