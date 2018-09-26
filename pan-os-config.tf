@@ -51,6 +51,7 @@ resource "null_resource" "panos_settings" {
     command = <<EOF
                 PATH=$(pwd)/venv/bin:/usr/local/bin:$PATH
                 if [ ! -d "venv" ]; then
+                    pip install virtualenv
                     virtualenv venv
                 fi
                 . venv/bin/activate
