@@ -63,7 +63,9 @@ resource "null_resource" "panos_settings" {
   }
 
   triggers = {
-    ansible_playbook = "${sha1(file("${path.module}/pan-os-ansible/playbook.yml"))}"
+    always = "${uuid()}"
+    //ansible_playbook = "${sha1(file("${path.module}/pan-os-ansible/playbook.yml"))}"
+    //ansible_inventory = "${sha1(file("${path.module}/pan-os-ansible/inventory.ini"))}"
   }
 
   depends_on = ["local_file.host_vars_file", "local_file.inventory_file", "azurerm_virtual_machine.pan_vm"]
