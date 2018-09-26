@@ -11,6 +11,7 @@ data "template_file" "host_vars_template" {
     untrusted_address_prefix = "${data.azurerm_subnet.untrusted_subnet.address_prefix}"
     username                 = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
     password                 = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
+    trusted_destination_ip   = "${var.trusted_destination_ip}"
   }
 }
 
