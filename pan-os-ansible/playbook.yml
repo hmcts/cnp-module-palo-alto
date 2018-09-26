@@ -69,7 +69,7 @@
       ntp_server_primary: "time.windows.com"
       timezone: "Europe/London"   
 
-  - name: Commit pending firewall changes
+  - name: Commit firewall changes
     panos_commit:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
