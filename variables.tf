@@ -69,3 +69,7 @@ variable "marketplace_offer" {
 variable "marketplace_publisher" {
   default = "paloaltonetworks"
 }
+
+variable "common_tags" {
+  type = "map"
+}

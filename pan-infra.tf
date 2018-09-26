@@ -2,118 +2,31 @@ resource "azurerm_resource_group" "resource_group" {
   name     = "${var.product}-pan-${var.env}"
   location = "${var.resource_group_location}"
 
-  tags {
-    environment = "${var.env}"
-  }
+  tags = "${var.common_tags}"
 }
 
-resource "random_string" "admin_password" {
-  length           = 16
-  special          = true
-  override_special = "!@?&"
+locals {
+  localEnv = "${var.env == "preview" ? "aat" : var.env}"
+  infraVaultName = "infra-vault-${local.localEnv}"
 }
 
-resource "azurerm_key_vault" "key_vault" {
-  name                = "pan-creds-vault-${var.env}"
-  location            = "${var.resource_group_location}"
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
-
-  sku {
-    name = "standard"
-  }
-
-  tenant_id = "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
-
-  access_policy {
-    tenant_id = "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
-    object_id = "300e771f-856c-45cc-b899-40d78281e9c1"
-
-    key_permissions = [
-      "get",
-      "create",
-      "list",
-      "delete",
-    ]
-
-    secret_permissions = [
-      "get",
-      "set",
-      "list",
-      "delete",
-    ]
-  }
-
-  enabled_for_disk_encryption = true
-
-  tags {
-    environment = "${var.env}"
-  }
+data "azurerm_key_vault" "infra_vault" {
+  name                = "${local.infraVaultName}"
+  resource_group_name = "${local.infraVaultName}"
 }
 
-resource "azurerm_key_vault_secret" "pan_admin_username" {
+data "azurerm_key_vault_secret" "pan_admin_username" {
   name      = "pan-admin-username"
-  value     = "${var.admin_username}"
-  vault_uri = "${azurerm_key_vault.key_vault.vault_uri}"
-
-  depends_on = ["azurerm_key_vault.key_vault"]
-
-  tags {
-    environment = "${var.env}"
-  }
+  vault_uri = "${data.azurerm_key_vault.infra_vault.vault_uri}"
 }
 
-resource "azurerm_key_vault_secret" "pan_admin_password" {
+data "azurerm_key_vault_secret" "pan_admin_password" {
   name      = "pan-admin-password"
-  value     = "${random_string.admin_password.result}"
-  vault_uri = "${azurerm_key_vault.key_vault.vault_uri}"
-
-  depends_on = ["azurerm_key_vault.key_vault"]
-
-  tags {
-    environment = "${var.env}"
-  }
-}
-
-resource "azurerm_lb" "load_balancer" {
-  name                = "${var.product}-pan-load-balancer-${var.env}"
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  location            = "${var.resource_group_location}"
-
-  frontend_ip_configuration {
-    name                          = "${var.product}-pan-load-balancer-frontend-ip-config-${var.env}"
-    subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
-    private_ip_address_allocation = "dynamic"
-  }
-}
-
-resource "azurerm_lb_backend_address_pool" "backend_pool" {
-  name                = "${var.product}-pan-backend-pool-${var.env}"
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  loadbalancer_id     = "${azurerm_lb.load_balancer.id}"
-}
-
-resource "azurerm_lb_rule" "http_lb_rule" {
-  name                           = "http_rule"
-  resource_group_name            = "${azurerm_resource_group.resource_group.name}"
-  loadbalancer_id                = "${azurerm_lb.load_balancer.id}"
-  frontend_ip_configuration_name = "${var.product}-pan-load-balancer-frontend-ip-config-${var.env}"
-  protocol                       = "Tcp"
-  frontend_port                  = "80"
-  backend_port                   = "80"
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.backend_pool.id}"
-  probe_id                       = "${azurerm_lb_probe.http_lb_probe.id}"
-}
-
-resource "azurerm_lb_probe" "http_lb_probe" {
-  name                = "http_probe"
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  loadbalancer_id     = "${azurerm_lb.load_balancer.id}"
-  port                = "80"
-  protocol            = "Tcp"
+  vault_uri = "${data.azurerm_key_vault.infra_vault.vault_uri}"
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  name                = "${var.product}-pan-nsg-${var.env}"
+  name                = "${var.product}-pan-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
 
@@ -239,7 +152,7 @@ resource "azurerm_network_interface" "mgmt_nic" {
 }
 
 resource "azurerm_network_interface" "untrusted_nic" {
-  name                = "${var.product}-pan-untrusted-nic-${count.index}-${var.env}"
+  name                = "${var.product}-pan-untrusted-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
   count               = "${var.cluster_size}"
@@ -250,7 +163,6 @@ resource "azurerm_network_interface" "untrusted_nic" {
     name                                    = "${join("", list("ipconfig", "1"))}"
     subnet_id                               = "${data.azurerm_subnet.untrusted_subnet.id}"
     private_ip_address_allocation           = "dynamic"
-    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
   }
 
   tags {
@@ -259,7 +171,7 @@ resource "azurerm_network_interface" "untrusted_nic" {
 }
 
 resource "azurerm_network_interface" "trusted_nic" {
-  name                = "${var.product}-pan-trusted-nic-${count.index}-${var.env}"
+  name                = "${var.product}-pan-trusted-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
   count               = "${var.cluster_size}"
@@ -278,7 +190,7 @@ resource "azurerm_network_interface" "trusted_nic" {
 }
 
 resource "azurerm_virtual_machine" "pan_vm" {
-  name                = "${var.product}-pan-vm-${count.index}-${var.env}"
+  name                = "${var.product}-pan-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
   availability_set_id = "${azurerm_availability_set.availability_set.id}"
@@ -299,16 +211,16 @@ resource "azurerm_virtual_machine" "pan_vm" {
   }
 
   storage_os_disk {
-    name              = "${var.product}-pan-vm-os-disk-${count.index}-${var.env}"
+    name              = "${var.product}-pan-${count.index}-${var.env}"
     managed_disk_type = "Standard_LRS"
     caching           = "ReadWrite"
     create_option     = "FromImage"
   }
 
   os_profile {
-    computer_name  = "${var.product}-pan-vm-${count.index}-${var.env}"
-    admin_username = "${var.admin_username}"
-    admin_password = "${random_string.admin_password.result}"
+    computer_name  = "${var.product}-pan-${count.index}-${var.env}"
+    admin_username = "${data.azurerm_key_vault_secret.pan_admin_username}"
+    admin_password = "${data.azurerm_key_vault_secret.pan_admin_password}"
   }
 
   primary_network_interface_id = "${element(azurerm_network_interface.mgmt_nic.*.id, count.index)}"
