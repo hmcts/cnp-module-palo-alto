@@ -51,12 +51,12 @@
       nexthop: "{{ ((untrusted_ip_prefix | ipaddr('int')) + 1) | ipaddr }}"
       commit: False   
 
-  - name: Add object 'protected-lib'
+  - name: Add object 'protected-ip'
     panos_object:
       ip_address: '{{ ansible_default_ipv4.address }}'
       username: '{{ pan_username }}'
       password: '{{ pan_password }}'
-      addressobject: 'protected-lib'
+      addressobject: 'protected-ip'
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
       operation: 'add'
