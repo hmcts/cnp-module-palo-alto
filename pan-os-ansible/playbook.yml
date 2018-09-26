@@ -53,9 +53,9 @@
 
   - name: Add object 'protected-ip'
     panos_object:
-      ip_address: '{{ ansible_default_ipv4.address }}'
-      username: '{{ pan_username }}'
-      password: '{{ pan_password }}'
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
       addressobject: 'protected-ip'
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
