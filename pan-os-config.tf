@@ -49,7 +49,7 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
-                PATH=$(pwd)/venv/bin:/usr/local/bin:$PATH
+                PATH=$(pwd)/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 if [ ! -d "venv" ]; then
                     pip install --user virtualenv
                     virtualenv venv
