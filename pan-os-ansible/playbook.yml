@@ -31,37 +31,37 @@
       operation: "update"
       commit: False
 
-  # - name: Create route 'ILB'
-  #   panos_static_route:
-  #     ip_address: '{{ ansible_default_ipv4.address }}'
-  #     username: '{{ pan_username }}'
-  #     password: '{{ pan_password }}'
-  #     name: 'ILB'
-  #     destination: '1.1.1.0/24'
-  #     nexthop: '10.0.0.1'
-  #     commit: False    
+  - name: Create route 'protected-route'
+    panos_static_route:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      name: 'protected-route'
+      destination: '{{ trusted_destination_ip }}/32'
+      nexthop: "{{ ((trusted_ip_prefix | ipaddr('int')) + 1) | ipaddr }}"
+      commit: False    
 
-  # - name: Create route 'AppGW'
-  #   panos_static_route:
-  #     ip_address: '{{ ansible_default_ipv4.address }}'
-  #     username: '{{ pan_username }}'
-  #     password: '{{ pan_password }}'
-  #     name: 'AppGW'
-  #     destination: '1.1.1.0/24'
-  #     nexthop: '10.0.0.1'
-  #     commit: False   
+  - name: Create route 'gateway-route'
+    panos_static_route:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      name: 'gateway-route'
+      destination: '0.0.0.0/0'
+      nexthop: "{{ ((untrusted_ip_prefix | ipaddr('int')) + 1) | ipaddr }}"
+      commit: False   
 
-  # - name: Add ase-lib object
-  #   panos_object:
-  #     ip_address: '{{ ansible_default_ipv4.address }}'
-  #     username: '{{ pan_username }}'
-  #     password: '{{ pan_password }}'
-  #     addressobject: 'ase-lib'
-  #     address: '/32'
-  #     address_type: 'ip-netmask'
-  #     operation: 'add'
+  - name: Add object 'protected-lib'
+    panos_object:
+      ip_address: '{{ ansible_default_ipv4.address }}'
+      username: '{{ pan_username }}'
+      password: '{{ pan_password }}'
+      addressobject: 'protected-lib'
+      address: '{{ trusted_destination_ip }}/32'
+      address_type: 'ip-netmask'
+      operation: 'add'
 
-  - name: Set NTP
+  - name: Configure NTP to 'time.windows.com'
     panos_mgtconfig:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'

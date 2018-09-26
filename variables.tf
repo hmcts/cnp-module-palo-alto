@@ -2,6 +2,7 @@ variable "product" {}
 
 variable "env" {}
 
+variable "trusted_destination_ip" {}
 variable "trusted_vnet_name" {}
 
 variable "trusted_vnet_resource_group" {}

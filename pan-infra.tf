@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "resource_group" {
 locals {
   localEnv       = "${var.env == "preview" ? "aat" : var.env}"
   infraVaultName = "infra-vault-${local.localEnv}"
-  infraVaultUri = "https://${local.infraVaultName}.vault.azure.net/"
+  infraVaultUri  = "https://${local.infraVaultName}.vault.azure.net/"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_username" {
