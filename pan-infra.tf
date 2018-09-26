@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "resource_group" {
 }
 
 locals {
-  localEnv = "${var.env == "preview" ? "aat" : var.env}"
+  localEnv       = "${var.env == "preview" ? "aat" : var.env}"
   infraVaultName = "infra-vault-${local.localEnv}"
 }
 
@@ -160,9 +160,9 @@ resource "azurerm_network_interface" "untrusted_nic" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                                    = "${join("", list("ipconfig", "1"))}"
-    subnet_id                               = "${data.azurerm_subnet.untrusted_subnet.id}"
-    private_ip_address_allocation           = "dynamic"
+    name                          = "${join("", list("ipconfig", "1"))}"
+    subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
+    private_ip_address_allocation = "dynamic"
   }
 
   tags {
