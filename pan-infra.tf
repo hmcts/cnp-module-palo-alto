@@ -8,21 +8,17 @@ resource "azurerm_resource_group" "resource_group" {
 locals {
   localEnv       = "${var.env == "preview" ? "aat" : var.env}"
   infraVaultName = "infra-vault-${local.localEnv}"
-}
-
-data "azurerm_key_vault" "infra_vault" {
-  name                = "${local.infraVaultName}"
-  resource_group_name = "${local.infraVaultName}"
+  infraVaultUri = "https://${local.infraVaultName}.vault.azure.net/"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_username" {
   name      = "pan-admin-username"
-  vault_uri = "${data.azurerm_key_vault.infra_vault.vault_uri}"
+  vault_uri = "${local.infraVaultUri}"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_password" {
   name      = "pan-admin-password"
-  vault_uri = "${data.azurerm_key_vault.infra_vault.vault_uri}"
+  vault_uri = "${local.infraVaultUri}"
 }
 
 resource "azurerm_network_security_group" "nsg" {
