@@ -54,7 +54,7 @@ resource "null_resource" "panos_settings" {
                     pip install --user virtualenv
                     virtualenv ${path.module}/venv
                 fi
-                ${path.module}/venv/bin/activate
+                source ${path.module}/venv/bin/activate
                 pip install ansible
                 set +x
                 ansible-galaxy install PaloAltoNetworks.paloaltonetworks --roles-path=${path.module}/roles
