@@ -1,14 +1,10 @@
-output "vault_uri" {
-  value = "${azurerm_key_vault.key_vault.vault_uri}"
-}
-
 output "admin_username" {
-  value     = "${var.admin_username}"
+  value     = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
   sensitive = true
 }
 
 output "admin_password" {
-  value     = "${random_string.admin_password.result}"
+  value     = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
   sensitive = true
 }
 

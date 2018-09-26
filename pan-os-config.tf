@@ -9,8 +9,8 @@ data "template_file" "host_vars_template" {
     mgmt_address_prefix      = "${data.azurerm_subnet.mgmt_subnet.address_prefix}"
     trusted_address_prefix   = "${data.azurerm_subnet.trusted_subnet.address_prefix}"
     untrusted_address_prefix = "${data.azurerm_subnet.untrusted_subnet.address_prefix}"
-    username                 = "${var.admin_username}"
-    password                 = "${random_string.admin_password.result}"
+    username                 = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
+    password                 = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
   }
 }
 

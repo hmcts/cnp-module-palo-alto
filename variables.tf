@@ -1,42 +1,24 @@
-variable "product" {
-  type = "string"
-}
+variable "product" {}
 
-variable "env" {
-  type = "string"
-}
+variable "env" {}
 
-variable "trusted_vnet_name" {
-  type = "string"
-}
+variable "trusted_vnet_name" {}
 
-variable "trusted_vnet_resource_group" {
-  type = "string"
-}
+variable "trusted_vnet_resource_group" {}
 
-variable "trusted_vnet_subnet_name" {
-  type = "string"
-}
+variable "trusted_vnet_subnet_name" {}
 
-variable "untrusted_vnet_name" {
-  type = "string"
-}
+variable "untrusted_vnet_name" {}
 
-variable "untrusted_vnet_resource_group" {
-  type = "string"
-}
+variable "untrusted_vnet_resource_group" {}
 
-variable "untrusted_vnet_subnet_name" {
-  type = "string"
-}
+variable "untrusted_vnet_subnet_name" {}
 
 variable "cluster_size" {
-  type    = "string"
   default = "2"
 }
 
 variable "resource_group_location" {
-  type    = "string"
   default = "UK South"
 }
 
@@ -46,11 +28,6 @@ variable "vm_size" {
 
 variable "vm_offer" {
   default = "vmseries1"
-}
-
-variable "admin_username" {
-  default = "reform-pan-admin"
-  type    = "string"
 }
 
 variable "allowed_external_ip" {
