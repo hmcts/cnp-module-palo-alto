@@ -50,15 +50,15 @@ resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
                 PATH=$(pwd)/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
-                if [ ! -d "venv" ]; then
+                if [ ! -d "$(pwd)/venv" ]; then
                     pip install --user virtualenv
-                    virtualenv venv
+                    virtualenv $(pwd)/venv
                 fi
-                . venv/bin/activate
+                $(pwd)/venv/bin/activate
                 pip install ansible
                 set +x
-                ansible-galaxy install PaloAltoNetworks.paloaltonetworks --roles-path=roles
-                ANSIBLE_ROLES_PATH="roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e 'ansible_python_interpreter=$(pwd)/venv/bin/python' ${path.module}/pan-os-ansible/playbook.yml
+                ansible-galaxy install PaloAltoNetworks.paloaltonetworks --roles-path=$(pwd)/roles
+                ANSIBLE_ROLES_PATH="$(pwd)/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e 'ansible_python_interpreter=$(pwd)/venv/bin/python' ${path.module}/pan-os-ansible/playbook.yml
               EOF
   }
 
