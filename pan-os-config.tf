@@ -57,7 +57,7 @@ resource "null_resource" "panos_settings" {
                 . venv/bin/activate
                 pip install ansible
                 set +x
-                ansible-playbook -i pan-os-ansible/inventory.ini -e 'ansible_python_interpreter=venv/bin/python' pan-os-ansible/playbook.yml
+                ansible-playbook -i pan-os-ansible/inventory.ini -e 'ansible_python_interpreter=venv/bin/python' $(pwd)/pan-os-ansible/playbook.yml
               EOF
   }
 
