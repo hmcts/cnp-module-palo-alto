@@ -48,7 +48,16 @@ resource "local_file" "inventory_file" {
 
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
-    command = "ansible-playbook -i pan-os-ansible/inventory.ini pan-os-ansible/playbook.yml"
+    command = <<EOF
+                PATH=$(pwd)/venv/bin:/usr/local/bin:$PATH
+                if [ ! -d "venv" ]; then
+                    virtualenv venv
+                fi
+                . venv/bin/activate
+                pip install ansible
+                set +x
+                ansible-playbook -i pan-os-ansible/inventory.ini -e 'ansible_python_interpreter=venv/bin/python' pan-os-ansible/playbook.yml
+              EOF
   }
 
   triggers = {
