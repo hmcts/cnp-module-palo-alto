@@ -5,7 +5,7 @@ trusted_ip: "${trusted_ip}"
 trusted_address_prefix: "${trusted_address_prefix}"
 untrusted_ip: "${untrusted_ip}"
 untrusted_address_prefix: "${untrusted_address_prefix}"
-trusted_destination_ip "${trusted_destination_ip}"
+trusted_destination_ip: "${trusted_destination_ip}"
 username: "${username}"
 password: "${password}"
 
