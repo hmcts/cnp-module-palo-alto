@@ -74,8 +74,8 @@
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
       operation: 'find'
-      commit: false
-    register: protected-ip
+    register: result
+  - debug: msg='{{ result.stdout_lines }}'
 
   - name: Add object 'protected-ip' if it doesn't exist
     panos_object:
@@ -87,7 +87,7 @@
       address_type: 'ip-netmask'
       operation: 'add'
       commit: false
-    when: protected-ip is not defined
+    when: protectedip is not defined
   
   - name: Configure NTP to 'time.windows.com'
     panos_mgtconfig:
