@@ -13,6 +13,12 @@
         trusted_nexthop: "{{ (( trusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
         untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}"
 
+    - name: Wait for API to be available on host
+      wait_for:
+        host: '{{ mgmt_ip }}'
+        port: 443
+        timeout: 600
+
     - import_tasks: tasks/panos-interfaces.yml
     - import_tasks: tasks/panos-routes.yml
     - import_tasks: tasks/panos-objects.yml
