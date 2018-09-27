@@ -76,7 +76,6 @@
       operation: 'find'
       commit: false
     register: protected-ip
-  - debug: msg='{{ protected-ip.stdout_lines }}'
 
   - name: Add object 'protected-ip' if it doesn't exist
     panos_object:
