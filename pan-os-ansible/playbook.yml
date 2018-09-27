@@ -5,15 +5,7 @@
 
   roles:
     - role: PaloAltoNetworks.paloaltonetworks
-  tasks:
-
-  - name: Configure NTP to 'time.windows.com'
-    panos_mgtconfig:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      ntp_server_primary: "time.windows.com"
-      timezone: "Europe/London"   
+  tasks: 
 
   - name: Set ethernet1/1 (Untrusted)
     panos_interface:
@@ -26,6 +18,8 @@
       enable_dhcp: true
       operation: "add"
       commit: False
+      # Ignore error as it already might exist (panos module is not idempotent)
+      ignore_errors: yes
 
   - name: Set ethernet1/2 (Trusted)
     panos_interface:
@@ -38,6 +32,8 @@
       enable_dhcp: true
       operation: "add"
       commit: False
+      # Ignore error as it already might exist (panos module is not idempotent)
+      ignore_errors: yes
 
   - name: Create route 'protected-route'
     panos_static_route:
@@ -68,9 +64,18 @@
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
       operation: 'add'
-
+  
+  - name: Configure NTP to 'time.windows.com'
+    panos_mgtconfig:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      ntp_server_primary: "time.windows.com"
+      timezone: "Europe/London"  
+  
   - name: Commit firewall changes
     panos_commit:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
+      timeout: 30
