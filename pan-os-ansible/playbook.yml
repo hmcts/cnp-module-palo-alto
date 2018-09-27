@@ -6,20 +6,19 @@
   roles:
     - role: PaloAltoNetworks.paloaltonetworks
   tasks: 
+    - name: Calculate IPs
+      set_fact: 
+        # Get network address from CIDR notation, convert to int, increment by 1, convert back to IPv4 format
+        trusted_nexthop: "{{ (( trusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
+        untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}"
 
-  - name: Calculate IPs
-    set_fact: 
-      # Get network address from CIDR notation, convert to int, increment by 1, convert back to IPv4 format
-      trusted_nexthop: "{{ (( trusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
-      untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}"
+    - import_tasks: tasks/panos-interfaces.yml
+    - import_tasks: tasks/panos-routes.yml
+    - import_tasks: tasks/panos-objects.yml
+    - import_tasks: tasks/panos-config.yml
 
-  - import_tasks: tasks/panos-interfaces.yml
-  - import_tasks: tasks/panos-routes.yml
-  - import_tasks: tasks/panos-objects.yml
-  - import_tasks: tasks/panos-config.yml
-
-  - name: Commit firewall changes
-    panos_commit:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
+    - name: Commit firewall changes
+      panos_commit:
+        ip_address: '{{ mgmt_ip }}'
+        username: '{{ username }}'
+        password: '{{ password }}'
