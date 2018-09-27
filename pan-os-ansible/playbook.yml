@@ -16,10 +16,8 @@
       zone_name: "untrusted"
       mode: "layer3"
       enable_dhcp: true
-      operation: "add"
+      operation: "update"
       commit: False
-      # Ignore error as it already might exist (panos module is not idempotent)
-      ignore_errors: yes
 
   - name: Set ethernet1/2 (Trusted)
     panos_interface:
@@ -30,7 +28,7 @@
       zone_name: "trusted"
       mode: "layer3"
       enable_dhcp: true
-      operation: "add"
+      operation: "update"
       commit: False
       # Ignore error as it already might exist (panos module is not idempotent)
       ignore_errors: yes
