@@ -28,9 +28,8 @@
       enable_dhcp: false
       ip: ['{{ untrusted_ip }}']
       operation: "add"
-      commit: False
-    # Ignore error as it already might exist (panos module is not idempotent)
-    ignore_errors: yes
+      state: 'present'
+      commit: false
 
   - name: Set ethernet1/2 (Trusted)
     panos_interface:
@@ -43,9 +42,8 @@
       enable_dhcp: false
       ip: ['{{ trusted_ip }}']
       operation: "add"
-      commit: False
-    # Ignore error as it already might exist (panos module is not idempotent)
-    ignore_errors: yes
+      state: 'present'
+      commit: false
 
   - name: Create route 'protected-route'
     panos_static_route:
@@ -55,7 +53,7 @@
       name: 'protected-route'
       destination: '{{ trusted_destination_ip }}/32'
       nexthop: '{{ trusted_nexthop }}'
-      virtual_router: 'default'
+      state: 'present'
 
   - name: Create route 'gateway-route'
     panos_static_route:
@@ -65,7 +63,7 @@
       name: 'gateway-route'
       destination: '0.0.0.0/0'
       nexthop: '{{ untrusted_nexthop }}'
-      virtual_router: 'default'
+      state: 'present'
 
   - name: Add object 'protected-ip'
     panos_object:
@@ -75,9 +73,7 @@
       addressobject: 'protected-ip'
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
-      operation: 'add'
-    # Ignore error as it already might exist (panos module is not idempotent)  
-    ignore_errors: yes
+      commit: false
   
   - name: Configure NTP to 'time.windows.com'
     panos_mgtconfig:
@@ -86,6 +82,7 @@
       password: '{{ password }}'
       ntp_server_primary: "time.windows.com"
       timezone: "Europe/London"  
+      commit: false
   
   - name: Commit firewall changes
     panos_commit:
