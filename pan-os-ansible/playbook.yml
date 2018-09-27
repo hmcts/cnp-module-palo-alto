@@ -87,7 +87,7 @@
       address_type: 'ip-netmask'
       operation: 'add'
       commit: false
-    when: protectedip is not defined
+    when: protectedip.msg is not 'Object matched'
   
   - name: Configure NTP to 'time.windows.com'
     panos_mgtconfig:
