@@ -7,8 +7,15 @@
     - role: PaloAltoNetworks.paloaltonetworks
   tasks: 
 
-  - set_fact: trusted_nexthop="{{ (( trusted_address_prefix | ipaddr('subnet') | ipaddr('int') ) + 1) | ipaddr }}"
-  - set_fact: untrusted_nexthop="{{ (( untrusted_address_prefix | ipaddr('subnet') | ipaddr('int') ) + 1) | ipaddr }}"
+  - name: Calculate IPs
+    set_fact: 
+      # Get network address from CIDR notation, convert to int, increment by 1, convert back to IPv4 format
+      trusted_nexthop: "{{ (( trusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
+      untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
+
+  - name: Display all variables/facts known for a host
+    debug:
+      var: hostvars[inventory_hostname]
 
   - name: Set ethernet1/1 (Untrusted)
     panos_interface:
