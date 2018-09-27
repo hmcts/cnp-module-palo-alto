@@ -7,6 +7,14 @@
     - role: PaloAltoNetworks.paloaltonetworks
   tasks:
 
+  - name: Configure NTP to 'time.windows.com'
+    panos_mgtconfig:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      ntp_server_primary: "time.windows.com"
+      timezone: "Europe/London"   
+
   - name: Set ethernet1/1 (Untrusted)
     panos_interface:
       ip_address: '{{ mgmt_ip }}'
@@ -60,14 +68,6 @@
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
       operation: 'add'
-
-  - name: Configure NTP to 'time.windows.com'
-    panos_mgtconfig:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      ntp_server_primary: "time.windows.com"
-      timezone: "Europe/London"   
 
   - name: Commit firewall changes
     panos_commit:
