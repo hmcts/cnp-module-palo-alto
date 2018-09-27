@@ -86,4 +86,3 @@
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      timeout: 30
