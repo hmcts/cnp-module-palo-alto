@@ -53,7 +53,6 @@
       name: 'protected-route'
       destination: '{{ trusted_destination_ip }}/32'
       nexthop: '{{ trusted_nexthop }}'
-      commit: False    
 
   - name: Create route 'gateway-route'
     panos_static_route:
@@ -63,7 +62,6 @@
       name: 'gateway-route'
       destination: '0.0.0.0/0'
       nexthop: '{{ untrusted_nexthop }}'
-      commit: False   
 
   - name: Add object 'protected-ip'
     panos_object:
