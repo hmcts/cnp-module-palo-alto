@@ -24,7 +24,7 @@
       zone_name: "untrusted"
       mode: "layer3"
       enable_dhcp: true
-      operation: "update"
+      operation: "add"
       commit: False
 
   - name: Set ethernet1/2 (Trusted)
@@ -36,7 +36,7 @@
       zone_name: "trusted"
       mode: "layer3"
       enable_dhcp: true
-      operation: "update"
+      operation: "add"
       commit: False
 
   - name: Create route 'protected-route'
