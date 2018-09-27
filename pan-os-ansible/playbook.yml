@@ -20,7 +20,8 @@
         register: result
         until: result.status == 200
         retries: 600
-        delay: 1        
+        delay: 1
+        validate_certs: false        
 
     - import_tasks: tasks/panos-interfaces.yml
     - import_tasks: tasks/panos-routes.yml
