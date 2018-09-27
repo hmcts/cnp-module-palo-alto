@@ -51,3 +51,11 @@ variable "marketplace_publisher" {
 variable "common_tags" {
   type = "map"
 }
+
+variable "pip_ansible_version" {
+  default = "2.6.4"
+}
+
+variable "pip_netaddr_version" {
+  default = "0.7.19"
+}

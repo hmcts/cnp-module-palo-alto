@@ -11,93 +11,13 @@
     set_fact: 
       # Get network address from CIDR notation, convert to int, increment by 1, convert back to IPv4 format
       trusted_nexthop: "{{ (( trusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
-      untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
+      untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}"
 
-  - name: Display all variables/facts known for a host
-    debug:
-      var: hostvars[inventory_hostname]
+  - import_tasks: tasks/panos-interfaces.yml
+  - import_tasks: tasks/panos-routes.yml
+  - import_tasks: tasks/panos-objects.yml
+  - import_tasks: tasks/panos-config.yml
 
-  - name: Set ethernet1/1 (Untrusted)
-    panos_interface:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      if_name: "ethernet1/1"
-      zone_name: "untrusted"
-      mode: "layer3"
-      enable_dhcp: false
-      ip: ['{{ untrusted_ip }}']
-      operation: "add"
-      state: 'present'
-      commit: false
-
-  - name: Set ethernet1/2 (Trusted)
-    panos_interface:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      if_name: "ethernet1/2"
-      zone_name: "trusted"
-      mode: "layer3"
-      enable_dhcp: false
-      ip: ['{{ trusted_ip }}']
-      operation: "add"
-      state: 'present'
-      commit: false
-
-  - name: Create route 'protected-route'
-    panos_static_route:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      name: 'protected-route'
-      destination: '{{ trusted_destination_ip }}/32'
-      nexthop: '{{ trusted_nexthop }}'
-      state: 'present'
-
-  - name: Create route 'gateway-route'
-    panos_static_route:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      name: 'gateway-route'
-      destination: '0.0.0.0/0'
-      nexthop: '{{ untrusted_nexthop }}'
-      state: 'present'
-
-  - name: Check if object 'protected-ip' exists
-    panos_object:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      addressobject: 'protected-ip'
-      address: '{{ trusted_destination_ip }}/32'
-      address_type: 'ip-netmask'
-      operation: 'find'
-    register: protectedip
-  - debug: msg='{{ protectedip }}'
-
-  - name: Add object 'protected-ip' if it doesn't exist
-    panos_object:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      addressobject: 'protected-ip'
-      address: '{{ trusted_destination_ip }}/32'
-      address_type: 'ip-netmask'
-      operation: 'add'
-      commit: false
-    when: protectedip.msg is not 'Object matched'
-  
-  - name: Configure NTP to 'time.windows.com'
-    panos_mgtconfig:
-      ip_address: '{{ mgmt_ip }}'
-      username: '{{ username }}'
-      password: '{{ password }}'
-      ntp_server_primary: "time.windows.com"
-      timezone: "Europe/London"  
-      commit: false
-  
   - name: Commit firewall changes
     panos_commit:
       ip_address: '{{ mgmt_ip }}'

@@ -1,0 +1,19 @@
+  - name: Create route 'protected-route'
+    panos_static_route:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      name: 'protected-route'
+      destination: '{{ trusted_destination_ip }}/32'
+      nexthop: '{{ trusted_nexthop }}'
+      state: 'present'
+
+  - name: Create route 'gateway-route'
+    panos_static_route:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      name: 'gateway-route'
+      destination: '0.0.0.0/0'
+      nexthop: '{{ untrusted_nexthop }}'
+      state: 'present'
