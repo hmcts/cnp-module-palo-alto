@@ -56,7 +56,7 @@ resource "null_resource" "panos_settings" {
                     virtualenv ${path.module}/venv
                 fi
                 source ${path.module}/venv/bin/activate
-                pip install ansible netaddr pan-python pandevice
+                pip install ansible netaddr
                 virtualenv --relocatable ${path.module}/venv
                 set +x
                 ansible-galaxy install PaloAltoNetworks.paloaltonetworks --roles-path=${path.module}/roles
