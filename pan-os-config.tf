@@ -49,7 +49,6 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
-                PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 if [ ! -d "${path.module}/venv" ]; then
                     pip install --user virtualenv
                     virtualenv ${path.module}/venv
@@ -59,12 +58,19 @@ resource "null_resource" "panos_settings" {
                 virtualenv --relocatable ${path.module}/venv
                 set +x
                 ansible-galaxy install PaloAltoNetworks.paloaltonetworks --roles-path=${path.module}/roles
-                ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
+                ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
               EOF
+  }
+
+  environment {
+    PATH               = "${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
+    PYTHONHTTPSVERIFY  = 0
+    ANSIBLE_ROLES_PATH = "${path.module}/roles"
   }
 
   triggers = {
     always = "${uuid()}"
+
     //ansible_playbook = "${sha1(file("${path.module}/pan-os-ansible/playbook.yml"))}"
     //ansible_inventory = "${sha1(file("${path.module}/pan-os-ansible/inventory.ini"))}"
   }
