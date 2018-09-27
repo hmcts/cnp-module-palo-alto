@@ -42,7 +42,7 @@
       password: '{{ password }}'
       name: 'protected-route'
       destination: '{{ trusted_destination_ip }}/32'
-      nexthop: "{{ ((trusted_ip_prefix | ipaddr('int')) + 1) | ipaddr }}"
+      nexthop: "{{ ((trusted_address_prefix | ipaddr('int')) + 1) | ipaddr }}"
       commit: False    
 
   - name: Create route 'gateway-route'
@@ -52,7 +52,7 @@
       password: '{{ password }}'
       name: 'gateway-route'
       destination: '0.0.0.0/0'
-      nexthop: "{{ ((untrusted_ip_prefix | ipaddr('int')) + 1) | ipaddr }}"
+      nexthop: "{{ ((untrusted_address_prefix | ipaddr('int')) + 1) | ipaddr }}"
       commit: False   
 
   - name: Add object 'protected-ip'
