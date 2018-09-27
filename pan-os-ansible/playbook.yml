@@ -25,7 +25,8 @@
       if_name: "ethernet1/1"
       zone_name: "untrusted"
       mode: "layer3"
-      enable_dhcp: true
+      enable_dhcp: false
+      ip: ['{{ untrusted_ip }}']
       operation: "add"
       commit: False
     # Ignore error as it already might exist (panos module is not idempotent)
@@ -39,7 +40,8 @@
       if_name: "ethernet1/2"
       zone_name: "trusted"
       mode: "layer3"
-      enable_dhcp: true
+      enable_dhcp: false
+      ip: ['{{ trusted_ip }}']
       operation: "add"
       commit: False
     # Ignore error as it already might exist (panos module is not idempotent)
@@ -53,6 +55,7 @@
       name: 'protected-route'
       destination: '{{ trusted_destination_ip }}/32'
       nexthop: '{{ trusted_nexthop }}'
+      virtual_router: 'default'
 
   - name: Create route 'gateway-route'
     panos_static_route:
@@ -62,6 +65,7 @@
       name: 'gateway-route'
       destination: '0.0.0.0/0'
       nexthop: '{{ untrusted_nexthop }}'
+      virtual_router: 'default'
 
   - name: Add object 'protected-ip'
     panos_object:
