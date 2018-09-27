@@ -65,7 +65,20 @@
       nexthop: '{{ untrusted_nexthop }}'
       state: 'present'
 
-  - name: Add object 'protected-ip'
+  - name: Check if object 'protected-ip' exists
+    panos_object:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      addressobject: 'protected-ip'
+      address: '{{ trusted_destination_ip }}/32'
+      address_type: 'ip-netmask'
+      operation: 'find'
+      commit: false
+    register: protected-ip
+  - debug: msg='{{ protected-ip.stdout_lines }}'
+
+  - name: Add object 'protected-ip' if it doesn't exist
     panos_object:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
@@ -75,6 +88,7 @@
       address_type: 'ip-netmask'
       operation: 'add'
       commit: false
+    when: protected-ip
   
   - name: Configure NTP to 'time.windows.com'
     panos_mgtconfig:
