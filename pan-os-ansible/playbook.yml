@@ -10,9 +10,6 @@
   - set_fact: trusted_nexthop="{{ trusted_address_prefix | regex_replace('(^.*\.).*$', '\\1') }}{{trusted_address_prefix.split('.')[3] | int + 1 }}"
   - set_fact: untrusted_nexthop="{{ untrusted_address_prefix | regex_replace('(^.*\.).*$', '\\1') }}{{untrusted_address_prefix.split('.')[3] | int + 1 }}"
 
-  - name: Echo configuration values
-    debug: mgmt_ip={{mgmt_ip}} mgmt_address_prefix={{mgmt_address_prefix}} trusted_ip={{ trusted_ip }} trusted_address_prefix={{ trusted_address_prefix }} untrusted_ip={{ untrusted_ip }} untrusted_address_prefix={{ untrusted_address_prefix }} trusted_nexthop={{ trusted_nexthop }} untrusted_nexthop={{ untrusted_nexthop }}
-
   - name: Set ethernet1/1 (Untrusted)
     panos_interface:
       ip_address: '{{ mgmt_ip }}'
