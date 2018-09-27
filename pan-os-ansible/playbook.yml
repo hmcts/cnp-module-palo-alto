@@ -73,6 +73,7 @@
       addressobject: 'protected-ip'
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
+      operation: 'add'
       commit: false
   
   - name: Configure NTP to 'time.windows.com'
