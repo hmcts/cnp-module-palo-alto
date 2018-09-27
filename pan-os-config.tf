@@ -60,12 +60,12 @@ resource "null_resource" "panos_settings" {
                 ansible-galaxy install PaloAltoNetworks.paloaltonetworks --roles-path=${path.module}/roles
                 ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
               EOF
-  }
 
-  environment {
-    PATH               = "${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
-    PYTHONHTTPSVERIFY  = 0
-    ANSIBLE_ROLES_PATH = "${path.module}/roles"
+    environment {
+      PATH               = "${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
+      PYTHONHTTPSVERIFY  = 0
+      ANSIBLE_ROLES_PATH = "${path.module}/roles"
+    }
   }
 
   triggers = {
