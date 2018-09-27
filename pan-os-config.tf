@@ -50,7 +50,7 @@ resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
                 PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
-                PYTHONHTTPSVERIFY=0
+                export PYTHONHTTPSVERIFY=0
                 if [ ! -d "${path.module}/venv" ]; then
                     pip install --user virtualenv
                     virtualenv ${path.module}/venv
