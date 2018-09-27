@@ -10,10 +10,6 @@ try {
       checkout scm
     }
 
-    stage('Ansible Linting Checks') {
-      sh 'ansible-playbook pan-os-ansible/playbook.yml --check'
-    }
-
     stage('Terraform init') {
       sh 'terraform init'
     }
