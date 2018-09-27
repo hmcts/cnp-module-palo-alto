@@ -7,8 +7,8 @@
     - role: PaloAltoNetworks.paloaltonetworks
   tasks: 
 
-  - set_fact: trusted_nexthop="{{ trusted_address_prefix | regex_replace('(^.*\.).*$', '\\1') }}{{trusted_address_prefix.split('.')[3] | int + 1 }}"
-  - set_fact: untrusted_nexthop="{{ untrusted_address_prefix | regex_replace('(^.*\.).*$', '\\1') }}{{untrusted_address_prefix.split('.')[3] | int + 1 }}"
+  - set_fact: trusted_nexthop="{{ ((trusted_address_prefix | ipaddr('int')) + 1) | ipaddr }}"
+  - set_fact: untrusted_nexthop="{{ ((untrusted_address_prefix | ipaddr('int')) + 1) | ipaddr }}"
 
   - name: Set ethernet1/1 (Untrusted)
     panos_interface:
