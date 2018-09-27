@@ -16,7 +16,7 @@
       zone_name: "untrusted"
       mode: "layer3"
       enable_dhcp: true
-      operation: "create"
+      operation: "add"
       commit: False
     # Ignore error as it already might exist (panos module is not idempotent)
     ignore_errors: yes
@@ -30,7 +30,7 @@
       zone_name: "trusted"
       mode: "layer3"
       enable_dhcp: true
-      operation: "create"
+      operation: "add"
       commit: False
     # Ignore error as it already might exist (panos module is not idempotent)
     ignore_errors: yes
