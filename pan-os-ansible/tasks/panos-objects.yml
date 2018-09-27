@@ -11,7 +11,7 @@
     register: protectedip
     ignore_errors: yes
 
-  - name: Add object 'protected-ip' if it doesn't exist
+  - name: Create object 'protected-ip'
     panos_object:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
@@ -23,7 +23,7 @@
       commit: false
     when: protectedip is failed
 
-  - name: Update object 'protected-ip' if it exists
+  - name: Update object 'protected-ip'
     panos_object:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
