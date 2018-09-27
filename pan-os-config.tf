@@ -49,6 +49,9 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
+                PATH = "${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
+                PYTHONHTTPSVERIFY  = 0
+                ANSIBLE_ROLES_PATH = "${path.module}/roles"
                 if [ ! -d "${path.module}/venv" ]; then
                     pip install --user virtualenv
                     virtualenv ${path.module}/venv
@@ -62,9 +65,7 @@ resource "null_resource" "panos_settings" {
               EOF
 
     environment {
-      PATH               = "${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
-      PYTHONHTTPSVERIFY  = 0
-      ANSIBLE_ROLES_PATH = "${path.module}/roles"
+
     }
   }
 
