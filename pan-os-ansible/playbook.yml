@@ -74,8 +74,8 @@
       address: '{{ trusted_destination_ip }}/32'
       address_type: 'ip-netmask'
       operation: 'find'
-    register: result
-  - debug: msg='{{ result.stdout_lines }}'
+    register: protectedip
+  - debug: msg='{{ protectedip }}'
 
   - name: Add object 'protected-ip' if it doesn't exist
     panos_object:
