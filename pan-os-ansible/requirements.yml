@@ -1,3 +1,3 @@
-- src: https://github.com/PaloAltoNetworks/ansible-pan.git
-  version: v1.0.8.1
+- src: https://github.com/jrjohnson87/ansible-pan.git
+  version: patch-1
   name: PaloAltoNetworks.paloaltonetworks

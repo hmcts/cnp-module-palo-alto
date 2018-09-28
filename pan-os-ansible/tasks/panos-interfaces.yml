@@ -3,7 +3,7 @@
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      if_name: "ethernet1/2"
+      if_name: "ethernet1/1"
       zone_name: "trusted"
       mode: "layer3"
       enable_dhcp: false
@@ -17,7 +17,7 @@
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      if_name: "ethernet1/1"
+      if_name: "ethernet1/2"
       zone_name: "untrusted"
       mode: "layer3"
       enable_dhcp: false
