@@ -1,6 +1,7 @@
 variable "product" {}
 
 variable "env" {}
+variable "subscription" {}
 
 variable "trusted_destination_ip" {}
 variable "trusted_vnet_name" {}

@@ -6,8 +6,7 @@ resource "azurerm_resource_group" "resource_group" {
 }
 
 locals {
-  localEnv       = "${var.env == "preview" ? "aat" : var.env}"
-  infraVaultName = "infra-vault-${local.localEnv}"
+  infraVaultName = "infra-vault-${var.subscription}"
   infraVaultUri  = "https://${local.infraVaultName}.vault.azure.net/"
 }
 
@@ -100,7 +99,7 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 resource "azurerm_availability_set" "availability_set" {
-  name                         = "${var.product}-pan-availability-set-${var.env}"
+  name                         = "${var.product}-pan-${var.env}"
   resource_group_name          = "${azurerm_resource_group.resource_group.name}"
   location                     = "${var.resource_group_location}"
   managed                      = true
