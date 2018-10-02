@@ -5,7 +5,7 @@
   serial: 1
 
   roles:
-    - role: PaloAltoNetworks.paloaltonetworks
+  - role: PaloAltoNetworks.paloaltonetworks
   
   tasks: 
     - name: Calculate IPs
