@@ -24,6 +24,7 @@
         delay: 1
         validate_certs: false        
 
+    - import_tasks: tasks/panos-baseline.yml
     - import_tasks: tasks/panos-interfaces.yml
     - import_tasks: tasks/panos-routes.yml
     - import_tasks: tasks/panos-objects.yml

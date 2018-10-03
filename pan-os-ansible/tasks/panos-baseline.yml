@@ -1,0 +1,12 @@
+  - name: Create base configuration from template
+    template:
+      src: templates/panos-baseline.xml.j2
+      dest: "{{ playbook_dir }}/panos-baseline.xml"
+
+  - name: Upload base configuration
+    panos_import:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      file: "{{ playbook_dir }}/panos-baseline.xml"
+      category: "configuration"
