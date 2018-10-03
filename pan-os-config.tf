@@ -71,3 +71,19 @@ resource "null_resource" "panos_settings" {
 
   depends_on = ["local_file.host_vars_file", "local_file.inventory_file", "azurerm_virtual_machine.pan_vm"]
 }
+
+resource "null_resource" "untrusted_ips_fqdn" {
+  count    = "${var.cluster_size}"
+
+  triggers {
+        fqdn = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
+  }
+}
+
+resource "null_resource" "trusted_ips_fqdn" {
+  count    = "${var.cluster_size}"
+
+  triggers {
+        fqdn = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
+  }
+}

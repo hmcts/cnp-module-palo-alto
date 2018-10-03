@@ -28,8 +28,16 @@ output "trusted_ips" {
   value = "${azurerm_network_interface.trusted_nic.*.private_ip_address}"
 }
 
+output "trusted_ips_fqdn" {
+  value = "${null_resource.trusted_ips_fqdn.*.triggers}"
+}
+
 output "untrusted_ips" {
   value = "${azurerm_network_interface.untrusted_nic.*.private_ip_address}"
+}
+
+output "untrusted_ips_fqdn" {
+  value = "${null_resource.untrusted_ips_fqdn.*.triggers}"
 }
 
 output "cluster_size" {
