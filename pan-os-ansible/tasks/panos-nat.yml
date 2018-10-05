@@ -1,0 +1,43 @@
+  - name: Check if nat 'outside' exists
+    panos_object:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      rule_name: "outside"
+      operation: 'find'
+    register: outside
+    ignore_errors: yes
+
+  - name: Create nat 'outside'
+    panos_object:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      rule_name: "outside"
+      source_zone: ["any"]
+      destination_zone: "untrusted"
+      source: ["any"]
+      destination: ["{{ untrusted_ip }}"]
+      service: "any"
+      snat_type: "static-ip"
+      snat_interface: "ethernet1/2"
+      operation: 'add'
+      commit: false
+    when: outside is failed
+
+  - name: Update nat 'outside'
+    panos_object:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      rule_name: "outside"
+      source_zone: ["any"]
+      destination_zone: "untrusted"
+      source: ["any"]
+      destination: ["{{ untrusted_ip }}"]
+      service: "any"
+      snat_type: "static-ip"
+      snat_interface: "ethernet1/2"
+      operation: 'update'
+      commit: false
+    when: outside is succeeded

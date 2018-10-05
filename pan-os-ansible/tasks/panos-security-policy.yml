@@ -1,4 +1,4 @@
-- name: allow_http
+- name: Create security policy 'allow_http'
   panos_security_rule:
     ip_address: '{{ mgmt_ip }}'
     username: '{{ username }}'

@@ -28,7 +28,8 @@
     - import_tasks: tasks/panos-interfaces.yml
     - import_tasks: tasks/panos-routes.yml
     - import_tasks: tasks/panos-objects.yml
-    - import_tasks: tasks/panos-config.yml
+    - import_tasks: tasks/panos-nat.yml
+    - import_tasks: tasks/panos-mgmtconfig.yml
 
     - name: Commit firewall changes
       panos_commit:

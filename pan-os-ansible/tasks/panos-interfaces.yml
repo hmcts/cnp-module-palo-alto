@@ -1,9 +1,9 @@
-  - name: Set ethernet1/1 (Trusted)
+  - name: Set ethernet1/2 (Trusted)
     panos_interface:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      if_name: "ethernet1/1"
+      if_name: "ethernet1/2"
       zone_name: "trusted"
       mode: "layer3"
       enable_dhcp: false
@@ -12,12 +12,12 @@
       state: 'present'
       commit: false
 
-  - name: Set ethernet1/2 (Untrusted)
+  - name: Set ethernet1/1 (Untrusted)
     panos_interface:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      if_name: "ethernet1/2"
+      if_name: "ethernet1/1"
       zone_name: "untrusted"
       mode: "layer3"
       enable_dhcp: false

@@ -16,3 +16,6 @@ pan-os-ansible/inventory.ini
 
 # Ansible playbook replay file
 pan-os-ansible/playbook.retry
+
+venv/
+roles/
