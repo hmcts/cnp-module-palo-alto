@@ -1,5 +1,5 @@
   - name: Check if nat 'outside' exists
-    panos_object:
+    panos_nat_rule:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
@@ -9,7 +9,7 @@
     ignore_errors: yes
 
   - name: Create nat 'outside'
-    panos_object:
+    panos_nat_rule:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
@@ -26,7 +26,7 @@
     when: outside is failed
 
   - name: Update nat 'outside'
-    panos_object:
+    panos_nat_rule:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
