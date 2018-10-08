@@ -12,6 +12,7 @@ data "template_file" "host_vars_template" {
     username                 = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
     password                 = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
     trusted_destination_ip   = "${var.trusted_destination_ip}"
+    trusted_destination_host = "${var.trusted_destination_host}"
   }
 }
 

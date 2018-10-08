@@ -14,6 +14,15 @@
         trusted_nexthop: "{{ (( trusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}" 
         untrusted_nexthop: "{{ (( untrusted_address_prefix | ipaddr('network') | ipaddr('int') ) + 1) | ipaddr }}"
 
+    - name: Resolve trusted_destination_host
+      when:
+        (trusted_destination_host is defined) and (trusted_destination_host | trim != "")
+      set_fact:
+        trusted_destination_ip: "{{ lookup('dig', trusted_destination_host) }}"
+    - name: (Debug) - trusted_destination_ip
+      debug:
+        var:
+          trusted_destination_ip
     - name: Wait for API to be available on host
       uri:
         url: "https://{{ mgmt_ip }}/api"

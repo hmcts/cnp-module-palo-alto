@@ -3,7 +3,14 @@ variable "product" {}
 variable "env" {}
 variable "subscription" {}
 
-variable "trusted_destination_ip" {}
+variable "trusted_destination_ip" {
+  default = ""
+}
+
+variable "trusted_destination_host" {
+  default = ""
+}
+
 variable "trusted_vnet_name" {}
 
 variable "trusted_vnet_resource_group" {}
