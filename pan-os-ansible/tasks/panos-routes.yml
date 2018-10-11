@@ -6,7 +6,7 @@
       name: 'protected-route'
       destination: '{{ trusted_destination_ip }}/32'
       nexthop: '{{ trusted_nexthop }}'
-      interface: 'ethernet1/1'
+      interface: 'ethernet1/2'
       state: 'present'
 
   - name: Create route 'gateway-route'
@@ -17,5 +17,5 @@
       name: 'gateway-route'
       destination: '0.0.0.0/0'
       nexthop: '{{ untrusted_nexthop }}'
-      interface: 'ethernet1/2'
+      interface: 'ethernet1/1'
       state: 'present'

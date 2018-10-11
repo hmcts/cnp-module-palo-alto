@@ -19,8 +19,10 @@
       source_ip: ["any"]
       destination_ip: ["{{ untrusted_ip }}"]
       service: "any"
-      snat_type: "static-ip"
+      snat_type: "dynamic-ip-and-port"
       snat_interface: "ethernet1/2"
+      dnat_address: "protected-ip"
+      # TODO: Check if dnat translation type is static ip by default if not then module needs a change
       operation: 'add'
       commit: false
     when: outside is failed
@@ -36,8 +38,9 @@
       source_ip: ["any"]
       destination_ip: ["{{ untrusted_ip }}"]
       service: "any"
-      snat_type: "static-ip"
+      snat_type: "dynamic-ip-and-port"
       snat_interface: "ethernet1/2"
+      dnat_address: "protected-ip"
       operation: 'update'
       commit: false
     when: outside is succeeded
