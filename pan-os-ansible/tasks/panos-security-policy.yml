@@ -5,10 +5,7 @@
     password: '{{ password }}'
     rule_name: 'allow_http'
     rule_type: 'universal'
-    source_ip: ['any']
-    destination_ip: ['any']
     application: ['web-browsing']
-    category: ['application-default']
     antivirus: 'virus_policy'
     vulnerability: 'vulnerability_policy'
     spyware: 'default'
