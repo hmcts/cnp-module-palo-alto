@@ -11,6 +11,7 @@
         </permissions>
       </entry>
       <entry name="reform-pan-admin">
+      <!-- TODO: generate with CLI: request password-hash password <your password string> -->
         <phash>$1$ofuukqhb$N0z/wfsXxS5o/kHP7/O4s/</phash>
         <permissions>
           <role-based>
@@ -431,7 +432,7 @@
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>{{ trusted_destination_ip }}/32</destination>
+                    <destination>{{ trusted_destination_ip }}</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
