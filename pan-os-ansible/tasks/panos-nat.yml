@@ -22,7 +22,6 @@
       snat_type: "dynamic-ip-and-port"
       snat_interface: "ethernet1/2"
       dnat_address: "protected-ip"
-      # TODO: Check if dnat translation type is static ip by default if not then module needs a change
       operation: 'add'
       commit: false
     when: outside is failed
