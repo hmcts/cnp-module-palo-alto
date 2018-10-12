@@ -432,7 +432,7 @@
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>{{ trusted_destination_ip }}</destination>
+                    <destination>{{ trusted_destination_ip }}/32</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -646,7 +646,7 @@
           </import>
           <address>
             <entry name="trusted-ip">
-              <ip-netmask>{{ trusted_destination_ip }}/32</ip-netmask>
+              <ip-netmask>{{ trusted_destination_ip }}</ip-netmask>
             </entry>
           </address>
           <profiles>
