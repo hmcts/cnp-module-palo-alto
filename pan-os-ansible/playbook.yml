@@ -40,8 +40,8 @@
 #    - import_tasks: tasks/panos-nat.yml
 #    - import_tasks: tasks/panos-security-policy.yml
 
-    - name: Commit firewall changes
-      panos_commit:
-        ip_address: '{{ mgmt_ip }}'
-        username: '{{ username }}'
-        password: '{{ password }}'
+#    - name: Commit firewall changes
+#      panos_commit:
+#        ip_address: '{{ mgmt_ip }}'
+#        username: '{{ username }}'
+#        password: '{{ password }}'
