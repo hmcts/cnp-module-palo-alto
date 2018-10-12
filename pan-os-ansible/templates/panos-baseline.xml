@@ -348,10 +348,6 @@
                 <enable>no</enable>
               </ospfv3>
             </protocol>
-            <!--<interface>-->
-              <!--<member>ethernet1/1</member>-->
-              <!--<member>ethernet1/2</member>-->
-            <!--</interface>-->
             <ecmp>
               <algorithm>
                 <ip-modulo/>
@@ -360,6 +356,24 @@
           </entry>
         </virtual-router>
       </network>
+      <deviceconfig>
+        <system>
+          <timezone>Europe/London</timezone>
+          <type>
+            <dhcp-client>
+              <send-hostname>yes</send-hostname>
+              <send-client-id>no</send-client-id>
+              <accept-dhcp-hostname>no</accept-dhcp-hostname>
+              <accept-dhcp-domain>no</accept-dhcp-domain>
+            </dhcp-client>
+          </type>
+          <ntp-servers>
+            <primary-ntp-server>
+              <ntp-server-address>time.windows.com</ntp-server-address>
+            </primary-ntp-server>
+          </ntp-servers>
+        </system>
+      </deviceconfig>
     </entry>
   </devices>
 </config>
