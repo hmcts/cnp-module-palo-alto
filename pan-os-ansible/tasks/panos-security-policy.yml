@@ -6,10 +6,11 @@
     rule_name: 'allow_http'
     rule_type: 'universal'
     application: ['web-browsing']
-    antivirus: 'default'
-    vulnerability: 'default'
+    antivirus: 'virus_policy'
+    vulnerability: 'vulnerability_policy'
     spyware: 'default'
-    file_blocking: 'strict file blocking'
+    file_blocking: 'file_blocking_policy'
+    url_filtering: 'URLFPolicy'
     wildfire_analysis: 'default'
     action: 'allow'
     log_start: true
