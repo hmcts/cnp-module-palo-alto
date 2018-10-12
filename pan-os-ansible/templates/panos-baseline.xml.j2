@@ -1,5 +1,25 @@
 <?xml version="1.0"?>
 <config version="8.1.0" urldb="paloaltonetworks">
+  <mgt-config>
+    <users>
+      <entry name="admin">
+        <phash>*</phash>
+        <permissions>
+          <role-based>
+            <superuser>yes</superuser>
+          </role-based>
+        </permissions>
+      </entry>
+      <entry name="reform-pan-admin">
+        <phash>$1$ofuukqhb$N0z/wfsXxS5o/kHP7/O4s/</phash>
+        <permissions>
+          <role-based>
+            <superuser>yes</superuser>
+          </role-based>
+        </permissions>
+      </entry>
+    </users>
+  </mgt-config>
   <devices>
     <entry name="localhost.localdomain">
       <vsys>
