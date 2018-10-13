@@ -1,3 +1,16 @@
+  - name: hash password
+    panos_op:
+      ip_address: '{{ ip_address }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      cmd: 'request password-hash password {{ password }}'
+    register: password_result
+
+  - name: debug password result
+    debug:
+      var:
+        password_result
+
   - name: Create base configuration from template
     template:
       src: templates/panos-baseline.xml.j2
