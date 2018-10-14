@@ -1,3 +1,8 @@
+  - name: debug ip
+    debug:
+      var:
+        mgmt_ip
+
   - name: hash password
     panos_op:
       ip_address: '{{ mgmt_ip }}'
