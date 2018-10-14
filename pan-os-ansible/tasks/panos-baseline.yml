@@ -8,7 +8,7 @@
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      cmd: 'request password-hash password abcdefg'
+      cmd: 'request password-hash password "{{ password | urlencode }}"'
     register: password_result
 
   - name: debug password result
