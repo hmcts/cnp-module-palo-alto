@@ -1,6 +1,6 @@
   - name: hash password
     panos_op:
-      ip_address: '{{ ip_address }}'
+      ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
       cmd: 'request password-hash password {{ password }}'
