@@ -35,3 +35,9 @@
         ignore_errors: yes
 
     - import_tasks: tasks/panos-baseline.yml
+
+    - name: Commit firewall changes
+      panos_commit:
+        ip_address: '{{ mgmt_ip }}'
+        username: '{{ username }}'
+        password: '{{ password }}'
