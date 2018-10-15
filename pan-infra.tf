@@ -130,7 +130,7 @@ resource "azurerm_public_ip" "mgmt_pip" {
   location                     = "${var.resource_group_location}"
   resource_group_name          = "${azurerm_resource_group.resource_group.name}"
   public_ip_address_allocation = "static"
-  count = "${var.cluster_size}"
+  count                        = "${var.cluster_size}"
 
   tags = "${var.common_tags}"
 }
@@ -145,7 +145,7 @@ resource "azurerm_network_interface" "mgmt_nic" {
     name                          = "${join("", list("ipconfig", "0"))}"
     subnet_id                     = "${data.azurerm_subnet.mgmt_subnet.id}"
     private_ip_address_allocation = "dynamic"
-    public_ip_address_id = "${element(azurerm_public_ip.mgmt_pip.*.id, count.index)}"
+    public_ip_address_id          = "${element(azurerm_public_ip.mgmt_pip.*.id, count.index)}"
   }
 
   tags = "${var.common_tags}"

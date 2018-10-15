@@ -70,6 +70,7 @@ resource "null_resource" "panos_settings" {
 
   triggers = {
     always = "${uuid()}"
+
     //ansible_playbook = "${sha1(file("${path.module}/pan-os-ansible/playbook.yml"))}"
     //ansible_inventory = "${sha1(file("${path.module}/pan-os-ansible/inventory.ini"))}"
   }
@@ -78,17 +79,17 @@ resource "null_resource" "panos_settings" {
 }
 
 resource "null_resource" "untrusted_ips_fqdn" {
-  count    = "${var.cluster_size}"
+  count = "${var.cluster_size}"
 
   triggers {
-        fqdn = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
+    fqdn = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
   }
 }
 
 resource "null_resource" "trusted_ips_fqdn" {
-  count    = "${var.cluster_size}"
+  count = "${var.cluster_size}"
 
   triggers {
-        fqdn = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
+    fqdn = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
   }
 }
