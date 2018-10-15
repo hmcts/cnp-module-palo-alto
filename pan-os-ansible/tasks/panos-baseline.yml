@@ -27,6 +27,10 @@
     debug:
       var: phash_result.matches[0].phash
 
+  - name: set password hash for consumption in template
+    set_fact:
+      phash: '{{ phash_result.matches[0].phash }}'
+
   - name: Create base configuration from template
     template:
       src: templates/panos-baseline.xml.j2
