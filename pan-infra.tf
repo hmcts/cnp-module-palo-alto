@@ -126,7 +126,7 @@ data "azurerm_subnet" "untrusted_subnet" {
 }
 
 resource "azurerm_public_ip" "trusted_pip" {
-  name                         = "pan-trusted-${count.index}-${var.env}"
+  name                         = "${var.product}-pan-trusted-${count.index}-${var.env}"
   location                     = "${var.resource_group_location}"
   resource_group_name          = "${azurerm_resource_group.resource_group.name}"
   public_ip_address_allocation = "static"
