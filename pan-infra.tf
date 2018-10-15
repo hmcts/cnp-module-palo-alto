@@ -85,9 +85,7 @@ resource "azurerm_network_security_group" "nsg" {
     destination_address_prefix = "*"
   }
 
-  tags {
-    environment = "${var.env}"
-  }
+  tags = "${var.common_tags}"
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -106,9 +104,7 @@ resource "azurerm_availability_set" "availability_set" {
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
 
-  tags {
-    environment = "${var.env}"
-  }
+  tags = "${var.common_tags}"
 }
 
 data "azurerm_subnet" "mgmt_subnet" {
@@ -129,8 +125,18 @@ data "azurerm_subnet" "untrusted_subnet" {
   resource_group_name  = "${var.untrusted_vnet_resource_group}"
 }
 
+resource "azurerm_public_ip" "mgmt_pip" {
+  name                         = "pan-mgmt"
+  location                     = "${var.resource_group_location}"
+  resource_group_name          = "${azurerm_resource_group.resource_group.name}"
+  public_ip_address_allocation = "static"
+  count = "${var.cluster_size}"
+
+  tags = "${var.common_tags}"
+}
+
 resource "azurerm_network_interface" "mgmt_nic" {
-  name                = "${var.product}-pan-mgmt-nic-${count.index}-${var.env}"
+  name                = "${var.product}-pan-mgmt-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
   count               = "${var.cluster_size}"
@@ -139,11 +145,10 @@ resource "azurerm_network_interface" "mgmt_nic" {
     name                          = "${join("", list("ipconfig", "0"))}"
     subnet_id                     = "${data.azurerm_subnet.mgmt_subnet.id}"
     private_ip_address_allocation = "dynamic"
+    public_ip_address_id = "${element(azurerm_public_ip.mgmt_pip.*.id, count.index)}"
   }
 
-  tags {
-    environment = "${var.env}"
-  }
+  tags = "${var.common_tags}"
 }
 
 resource "azurerm_network_interface" "untrusted_nic" {
@@ -160,9 +165,7 @@ resource "azurerm_network_interface" "untrusted_nic" {
     private_ip_address_allocation = "dynamic"
   }
 
-  tags {
-    environment = "${var.env}"
-  }
+  tags = "${var.common_tags}"
 }
 
 resource "azurerm_network_interface" "trusted_nic" {
@@ -179,9 +182,7 @@ resource "azurerm_network_interface" "trusted_nic" {
     private_ip_address_allocation = "dynamic"
   }
 
-  tags {
-    environment = "${var.env}"
-  }
+  tags = "${var.common_tags}"
 }
 
 resource "azurerm_virtual_machine" "pan_vm" {
