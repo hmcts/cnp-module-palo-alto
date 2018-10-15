@@ -125,8 +125,8 @@ data "azurerm_subnet" "untrusted_subnet" {
   resource_group_name  = "${var.untrusted_vnet_resource_group}"
 }
 
-resource "azurerm_public_ip" "mgmt_pip" {
-  name                         = "pan-mgmt-${count.index}-${var.env}"
+resource "azurerm_public_ip" "trusted_pip" {
+  name                         = "pan-trusted-${count.index}-${var.env}"
   location                     = "${var.resource_group_location}"
   resource_group_name          = "${azurerm_resource_group.resource_group.name}"
   public_ip_address_allocation = "static"
@@ -145,7 +145,6 @@ resource "azurerm_network_interface" "mgmt_nic" {
     name                          = "${join("", list("ipconfig", "0"))}"
     subnet_id                     = "${data.azurerm_subnet.mgmt_subnet.id}"
     private_ip_address_allocation = "dynamic"
-    public_ip_address_id          = "${element(azurerm_public_ip.mgmt_pip.*.id, count.index)}"
   }
 
   tags = "${var.common_tags}"
@@ -180,6 +179,7 @@ resource "azurerm_network_interface" "trusted_nic" {
     name                          = "${join("", list("ipconfig", "2"))}"
     subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
+    public_ip_address_id          = "${element(azurerm_public_ip.trusted_pip.*.id, count.index)}"
   }
 
   tags = "${var.common_tags}"
