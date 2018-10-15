@@ -16,6 +16,17 @@
       var:
         password_result
 
+  - name: parse stdout xml
+    xml:
+      xmlstring: '{{ password_result.stdout_xml }}'
+      xpath: /response/result/phash
+      content: 'text'
+    register: phash_result
+
+  - name: debug phash_result
+    debug:
+      var: phash_result.matches[0].phash
+
   - name: Create base configuration from template
     template:
       src: templates/panos-baseline.xml.j2
