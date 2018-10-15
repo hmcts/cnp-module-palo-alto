@@ -57,7 +57,7 @@ resource "null_resource" "panos_settings" {
                     virtualenv ${path.module}/venv
                 fi
                 source ${path.module}/venv/bin/activate
-                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython
+                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
                 virtualenv --relocatable ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
