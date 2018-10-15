@@ -32,5 +32,6 @@
         retries: 5400
         delay: 1
         validate_certs: false
+        ignore_errors: yes
 
     - import_tasks: tasks/panos-baseline.yml
