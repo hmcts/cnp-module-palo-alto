@@ -108,7 +108,7 @@ resource "azurerm_availability_set" "availability_set" {
 }
 
 data "azurerm_subnet" "mgmt_subnet" {
-  name                 = "palo-mgmt-${var.env}"
+  name                 = "palo-mgmt"
   virtual_network_name = "core-infra-vnet-${var.env}"
   resource_group_name  = "core-infra-${var.env}"
 }
