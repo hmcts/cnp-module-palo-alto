@@ -215,5 +215,5 @@ resource "azurerm_virtual_machine" "pan_vm" {
     disable_password_authentication = false
   }
 
-  common_tags = "${var.common_tags}"
+  tags = "${var.common_tags}"
 }
