@@ -214,4 +214,6 @@ resource "azurerm_virtual_machine" "pan_vm" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
+
+  common_tags = "${var.common_tags}"
 }
