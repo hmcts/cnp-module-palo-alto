@@ -30,6 +30,33 @@
   - name: set password hash for consumption in template
     set_fact:
       phash: '{{ phash_result.matches[0].phash }}'
+  - name: hash log password
+    panos_op:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      cmd: 'request password-hash password "{{ log_password | urlencode }}"'
+    register: log_password_result
+
+  - name: debug log password result
+    debug:
+      var:
+        log_password_result
+
+  - name: parse stdout xml
+    xml:
+      xmlstring: '{{ log_password_result.stdout_xml }}'
+      xpath: /response/result/phash
+      content: 'text'
+    register: log_phash_result
+
+  - name: debug log_phash_result
+    debug:
+      var: log_phash_result.matches[0].phash
+
+  - name: set log password hash for consumption in template
+    set_fact:
+      log_phash: '{{ log_phash_result.matches[0].phash }}'
 
   - name: Create base configuration from template
     template:

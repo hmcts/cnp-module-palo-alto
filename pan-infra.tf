@@ -20,6 +20,16 @@ data "azurerm_key_vault_secret" "pan_admin_password" {
   vault_uri = "${local.infraVaultUri}"
 }
 
+data "azurerm_key_vault_secret" "pan_log_username" {
+  name      = "pan-log-username"
+  vault_uri = "${local.infraVaultUri}"
+}
+
+data "azurerm_key_vault_secret" "pan_log_password" {
+  name      = "pan-log-password"
+  vault_uri = "${local.infraVaultUri}"
+}
+
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.product}-pan-${var.env}"
   location            = "${var.resource_group_location}"
