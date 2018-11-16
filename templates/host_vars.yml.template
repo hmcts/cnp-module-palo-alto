@@ -9,6 +9,8 @@ trusted_destination_ip: "${trusted_destination_ip}"
 trusted_destination_host: "${trusted_destination_host}"
 username: "${username}"
 password: "${password}"
+log_username: "${log_username}"
+log_password: "${log_password}"
 
 
 
