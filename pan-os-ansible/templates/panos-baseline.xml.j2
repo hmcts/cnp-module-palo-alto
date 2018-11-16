@@ -18,16 +18,6 @@
           </role-based>
         </permissions>
       </entry>
-      <entry name="{{ log_username }}">
-        <permissions>
-          <role-based>
-            <custom>
-              <profile>monitor_readonly</profile>
-            </custom>
-          </role-based>
-        </permissions>
-        <phash>{{ log_phash }}</phash>
-      </entry>
     </users>
   </mgt-config>
   <shared>
@@ -108,6 +98,33 @@
         </entry>
       </http>
     </log-settings>
+    <admin-role>
+      <entry name="monitor_readonly">
+        <role>
+          <device>
+            <webui>
+              <monitor>
+                <logs>
+                  <traffic>enable</traffic>
+                  <threat>enable</threat>
+                  <url>enable</url>
+                  <wildfire>enable</wildfire>
+                  <data-filtering>enable</data-filtering>
+                  <hipmatch>enable</hipmatch>
+                  <userid>enable</userid>
+                  <tunnel>enable</tunnel>
+                  <configuration>enable</configuration>
+                  <system>enable</system>
+                  <alarm>enable</alarm>
+                  <authentication>enable</authentication>
+                </logs>
+              </monitor>
+            </webui>
+            <xmlapi/>
+          </device>
+        </role>
+      </entry>
+    </admin-role>    
   </shared>
   <devices>
     <entry name="localhost.localdomain">
@@ -987,41 +1004,6 @@
                   </entry>
                 </match-list>
               </entry>
-              <entry name="monitor_readonly">
-        <role>
-          <device>
-            <webui>
-              <monitor>
-                <logs>
-                  <traffic>enable</traffic>
-                  <threat>enable</threat>
-                  <url>enable</url>
-                  <wildfire>enable</wildfire>
-                  <data-filtering>enable</data-filtering>
-                  <hipmatch>enable</hipmatch>
-                  <userid>enable</userid>
-                  <tunnel>enable</tunnel>
-                  <configuration>enable</configuration>
-                  <system>enable</system>
-                  <alarm>enable</alarm>
-                  <authentication>enable</authentication>
-                </logs>
-                <app-scope>enable</app-scope>
-                <session-browser>enable</session-browser>
-                <block-ip-list>enable</block-ip-list>
-                <botnet>enable</botnet>
-                <view-custom-reports>enable</view-custom-reports>
-                <application-reports>enable</application-reports>
-                <threat-reports>enable</threat-reports>
-                <url-filtering-reports>enable</url-filtering-reports>
-                <traffic-reports>enable</traffic-reports>
-              </monitor>
-            </webui>
-            <xmlapi/>
-          </device>
-        </role>
-        <description>Role for read only access to logs</description>
-      </entry>
             </profiles>
           </log-settings>
         </entry>
