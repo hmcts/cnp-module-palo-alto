@@ -10,13 +10,23 @@
           </role-based>
         </permissions>
       </entry>
-      <entry name="{{ username }}">
-        <phash>{{ phash }}</phash>
+      <entry name="reform-pan-admin">
+        <phash>$1$teuufkeg$asWnw3bZQpNF3bj2IFNB01</phash>
         <permissions>
           <role-based>
             <superuser>yes</superuser>
           </role-based>
         </permissions>
+      </entry>
+      <entry name="pentest">
+        <permissions>
+          <role-based>
+            <custom>
+              <profile>monitor_readonly</profile>
+            </custom>
+          </role-based>
+        </permissions>
+        <phash>$1$rvoheksq$BTQ/CCn7UJR3HfJI087zA0</phash>
       </entry>
     </users>
   </mgt-config>
@@ -98,6 +108,43 @@
         </entry>
       </http>
     </log-settings>
+    <admin-role>
+      <entry name="monitor_readonly">
+        <role>
+          <device>
+            <webui>
+              <monitor>
+                <logs>
+                  <traffic>enable</traffic>
+                  <threat>enable</threat>
+                  <url>enable</url>
+                  <wildfire>enable</wildfire>
+                  <data-filtering>enable</data-filtering>
+                  <hipmatch>enable</hipmatch>
+                  <userid>enable</userid>
+                  <tunnel>enable</tunnel>
+                  <configuration>enable</configuration>
+                  <system>enable</system>
+                  <alarm>enable</alarm>
+                  <authentication>enable</authentication>
+                </logs>
+                <app-scope>enable</app-scope>
+                <session-browser>enable</session-browser>
+                <block-ip-list>enable</block-ip-list>
+                <botnet>enable</botnet>
+                <view-custom-reports>enable</view-custom-reports>
+                <application-reports>enable</application-reports>
+                <threat-reports>enable</threat-reports>
+                <url-filtering-reports>enable</url-filtering-reports>
+                <traffic-reports>enable</traffic-reports>
+              </monitor>
+            </webui>
+            <xmlapi/>
+          </device>
+        </role>
+        <description>Role for read only access to logs</description>
+      </entry>
+    </admin-role>
   </shared>
   <devices>
     <entry name="localhost.localdomain">
@@ -405,7 +452,7 @@
                       <hold-time>2</hold-time>
                     </path-monitor>
                     <nexthop>
-                      <ip-address>{{ untrusted_nexthop }}</ip-address>
+                      <ip-address>10.96.152.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -424,14 +471,14 @@
                       <hold-time>2</hold-time>
                     </path-monitor>
                     <nexthop>
-                      <ip-address>{{ trusted_nexthop }}</ip-address>
+                      <ip-address>10.96.151.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>{{ trusted_destination_ip }}/32</destination>
+                    <destination>51.140.168.142/32</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -512,7 +559,7 @@
                   <accept-dhcp-domain>no</accept-dhcp-domain>
                 </dhcp-client>
               </type>
-              <username>{{ username }}</username>
+              <username>reform-pan-admin</username>
             </initcfg>
           </management>
           <session>
@@ -624,7 +671,7 @@
                     <member>any</member>
                   </source>
                   <destination>
-                    <member>{{ untrusted_ip }}</member>
+                    <member>10.96.152.4</member>
                   </destination>
                   <service>any</service>
                   <destination-translation>
@@ -650,7 +697,7 @@
           </import>
           <address>
             <entry name="trusted-ip">
-              <ip-netmask>{{ trusted_destination_ip }}</ip-netmask>
+              <ip-netmask>51.140.168.142</ip-netmask>
             </entry>
           </address>
           <profiles>
