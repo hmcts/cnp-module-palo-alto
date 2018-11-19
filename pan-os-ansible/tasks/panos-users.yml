@@ -1,0 +1,9 @@
+  - name: Add Read-only PenTest user
+    panos_admin:
+      ip_address: '{{ mgmt_ip }}'
+      username: '{{ username }}'
+      password: '{{ password }}'
+      admin_username: '{{ log_username }}'
+      admin_password: '{{ log_password }}'
+      role: 'monitor_readonly'
+      commit: False
