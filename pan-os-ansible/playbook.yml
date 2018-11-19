@@ -35,6 +35,8 @@
         ignore_errors: yes
 
     - import_tasks: tasks/panos-baseline.yml
+    
+    - import_tasks: tasks/panos-users.yml
 
     - name: Commit firewall changes
       panos_commit:
