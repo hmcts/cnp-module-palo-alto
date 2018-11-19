@@ -41,11 +41,3 @@
         ip_address: '{{ mgmt_ip }}'
         username: '{{ username }}'
         password: '{{ password }}'
-
-    - import_tasks: tasks/panos-users.yml
-    
-    - name: Commit firewall changes
-      panos_commit:
-        ip_address: '{{ mgmt_ip }}'
-        username: '{{ username }}'
-        password: '{{ password }}'
