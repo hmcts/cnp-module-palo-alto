@@ -29,3 +29,5 @@ module "palo_alto" {
 ```
 
 Most of the required variables should already be defined (`env`,`product` etc). The only other variable needed will be the `trusted_destination_host`, which should be the hostname or IP of the destination to where you wish to forward the traffic on to - in the above example, it is being forwarded to a Storage Account that is defined as another resource in Terraform.
+
+For any networking questions regarding your deployment, please speak to Joseph Ball. For anything relating to this Terraform module, speak to James Johnson.
