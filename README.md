@@ -1,6 +1,6 @@
 # Automated Palo Alto
 
-This module deploys a Palo Alto cluster attached to two subnets - an incoming 'untrusted' subnet and outgoing 'trusted' subnet, with traffic passing between the two via the Palo Alto appliances. This traffic is scanned for any malware, with any malicious traffic being dropped prior to reaching the trusted subnet.
+This module deploys a Palo Alto cluster attached to two subnets - an incoming `untrusted` subnet and outgoing `trusted` subnet, with traffic passing between the two via the Palo Alto appliances. This traffic is scanned for any malware, with any malicious traffic being dropped prior to reaching the trusted subnet.
 
 Below is some example Terraform for consuming:
 
@@ -53,7 +53,6 @@ module "appGw" {
   ```
 
 Below are some configurable variables for the module that you may wish to override. Please see `variables.tf` for them all:
-
 
 `vm_offer` : The VM type to host. Defaults to `vmseries1`.
 
