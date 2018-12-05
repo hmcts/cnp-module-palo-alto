@@ -54,12 +54,11 @@ module "appGw" {
 
 Below are some configurable variables for the module that you may wish to override. Please see `variables.tf` for them all:
 
-```
-vm_offer : The VM type to host. Defaults to vmseries1.
 
-cluster_size : The number of VMs to have in the cluster. Defaults to 2.
+`vm_offer` : The VM type to host. Defaults to `vmseries1`.
 
-allowed_external_ip : The allowed IPs on the NSG applied to the Palos. Defaults to 0.0.0.0/0 (allow all)
-```
+`cluster_size` : The number of VMs to have in the cluster. Defaults to `2`.
+
+`allowed_external_ip` : The allowed IPs on the NSG applied to the Palos. Defaults to `0.0.0.0/0` (allow all)
 
 For any networking questions regarding your deployment, please speak to Joseph Ball. For anything relating to this Terraform module, speak to James Johnson.
