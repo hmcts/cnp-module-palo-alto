@@ -8,6 +8,7 @@ resource "azurerm_resource_group" "resource_group" {
 locals {
   infraVaultName = "infra-vault-${var.subscription}"
   infraVaultUri  = "https://${local.infraVaultName}.vault.azure.net/"
+  cluster_size = "${var.env == "prod" ? 2 : 1}"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_username" {
