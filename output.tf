@@ -40,6 +40,10 @@ output "untrusted_ips_fqdn" {
   value = "${null_resource.untrusted_ips_fqdn.*.triggers}"
 }
 
+output "untrusted_ips_ip_address" {
+  value = "${null_resource.untrusted_ips_ipAddress.*.triggers}"
+}
+
 output "cluster_size" {
   value = "${var.cluster_size}"
 }
