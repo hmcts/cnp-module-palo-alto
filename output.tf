@@ -41,7 +41,7 @@ output "untrusted_ips_fqdn" {
 }
 
 output "untrusted_ips_ip_address" {
-  value = "${null_resource.untrusted_ips_ipAddress.*.triggers}"
+  value = "${null_resource.untrusted_ips_ip_address.*.triggers}"
 }
 
 output "cluster_size" {
