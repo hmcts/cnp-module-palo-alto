@@ -88,6 +88,14 @@ resource "null_resource" "untrusted_ips_fqdn" {
   }
 }
 
+resource "null_resource" "untrusted_ips_ip_address" {
+  count = "${var.cluster_size}"
+
+  triggers {
+    ipAddress = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
+  }
+}
+
 resource "null_resource" "trusted_ips_fqdn" {
   count = "${var.cluster_size}"
 

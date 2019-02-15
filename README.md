@@ -30,7 +30,7 @@ module "palo_alto" {
 
 Most of the required variables should already be defined (`env`,`product` etc). The only other variable needed will be either `trusted_destination_ip` OR `trusted_destination_host`, which should be the IP or hostname of the destination to where you wish to forward the traffic on to - in the above example, it is being forwarded to a Storage Account host that is defined as another resource in Terraform.
 
-Obviously, you will need to send traffic to the Palo Altos in the first place, thus you will need to configure something like an Application Gateway (to handle SSL termination), with the backend pool being configured to point to the Palo Alto untrusted IPs, which are exposed as an output called `untrusted_ips_fqdn`. 
+Obviously, you will need to send traffic to the Palo Altos in the first place, thus you will need to configure something like an Application Gateway (to handle SSL termination), with the backend pool being configured to point to the Palo Alto untrusted IPs, which are exposed as an output called `untrusted_ips_ip_address`. 
 ```
 module "appGw" {
   source            = "git@github.com:hmcts/cnp-module-waf?ref=stripDownWf"
@@ -43,7 +43,7 @@ module "appGw" {
     {
       name = "${var.product}-${var.env}"
 
-      backendAddresses = "${module.palo_alto.untrusted_ips_fqdn}"
+      backendAddresses = "${module.palo_alto.untrusted_ips_ip_address}"
     },
   ]
   ...
