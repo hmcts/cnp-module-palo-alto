@@ -11,24 +11,29 @@ locals {
   cluster_size = "${var.env == "prod" ? 2 : 1}"
 }
 
+data "azurerm_key_vault" "infra_vault" {
+  name                = "infra-vault-${var.subscription}"
+  resource_group_name = "${var.subscription == "prod" ? core-infra-prod : cnp-core-infra}"
+}
+
 data "azurerm_key_vault_secret" "pan_admin_username" {
   name      = "pan-admin-username"
-  vault_uri = "${local.infraVaultUri}"
+  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_password" {
   name      = "pan-admin-password"
-  vault_uri = "${local.infraVaultUri}"
+  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pan_log_username" {
   name      = "pan-log-username"
-  vault_uri = "${local.infraVaultUri}"
+  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pan_log_password" {
   name      = "pan-log-password"
-  vault_uri = "${local.infraVaultUri}"
+  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 resource "azurerm_network_security_group" "nsg" {
