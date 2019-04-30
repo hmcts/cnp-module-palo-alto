@@ -13,7 +13,7 @@ locals {
 
 data "azurerm_key_vault" "infra_vault" {
   name                = "infra-vault-${var.subscription}"
-  resource_group_name = "${var.subscription == "prod" ? core-infra-prod : cnp-core-infra}"
+  resource_group_name = "${var.subscription == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_username" {
