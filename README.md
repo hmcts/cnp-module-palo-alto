@@ -1,6 +1,21 @@
 # Automated Palo Alto
 
+## Overview
+
 This module deploys a Palo Alto cluster attached to two subnets - an incoming `untrusted` subnet and outgoing `trusted` subnet, with traffic passing between the two via the Palo Alto appliances. HTTP (note!) traffic is scanned for any malware, with any malicious traffic being dropped prior to reaching the trusted subnet.
+
+## Pre-Requisites
+
+This module assumes it will be used within a CNP environment, therefore it requires secrets to be populated in the `infra-vault` of the environment you are deploying to (e.g. for production, `infra-vault-prod`, for QA, `infra-vault-qa`). Thus if you are creating a new environment, you will need to add the following:
+
+| Secret Name | Description |
+| --- | --- |
+| `pan-admin-username` | Username of Admin user |
+| `pan-admin-password` | Password of Admin user |
+| `pan-log-username` | Username of Read Only Log user |
+| `pan-log-password` | Password of Read Only Log user |
+
+## Consuming
 
 Below is some example Terraform for consuming:
 
@@ -52,6 +67,8 @@ module "appGw" {
 }  
   ```
 
+## Configuration
+
 Below are some configurable variables for the module that you may wish to override. Please see `variables.tf` for them all:
 
 `vm_offer` : The VM type to host. Defaults to `vmseries1`.
@@ -60,4 +77,6 @@ Below are some configurable variables for the module that you may wish to overri
 
 `allowed_external_ip` : The allowed IPs on the NSG applied to the Palos. Defaults to `0.0.0.0/0` (allow all)
 
-For any networking questions regarding your deployment, please speak to Joseph Ball. For anything relating to this Terraform module, speak to James Johnson.
+## Help
+
+For anything relating to this Terraform module, speak to James Johnson.
