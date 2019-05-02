@@ -1,3 +1,1 @@
-- src: https://github.com/jrjohnson87/ansible-pan.git
-  version: develop
-  name: PaloAltoNetworks.paloaltonetworks
+- src: PaloAltoNetworks.paloaltonetworks
