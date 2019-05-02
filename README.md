@@ -6,7 +6,11 @@ This module deploys a Palo Alto cluster attached to two subnets - an incoming `u
 
 ## Pre-Requisites
 
-This module assumes it will be used within a CNP environment, therefore it requires secrets to be populated in the `infra-vault` of the environment you are deploying to (e.g. for production, `infra-vault-prod`, for QA, `infra-vault-qa`). Thus if you are creating a new environment, you will need to add the following:
+This module assumes it will be used within a CNP environment, therefore it requires existing secrets, subnets and approved VMs.
+
+### Secrets
+
+Should be populated in the `infra-vault` of the environment you are deploying to (e.g. for production, `infra-vault-prod`, for QA, `infra-vault-qa`). Thus if you are creating a new environment, you will need to add the following:
 
 | Secret Name | Description |
 | --- | --- |
@@ -14,6 +18,24 @@ This module assumes it will be used within a CNP environment, therefore it requi
 | `pan-admin-password` | Password of Admin user |
 | `pan-log-username` | Username of Read Only Log user |
 | `pan-log-password` | Password of Read Only Log user |
+
+### Subnets
+
+The following subnets are required:
+
+| Subnet Name | Description |
+| --- | --- |
+| `palo-mgmt` |  |
+| `palo-trusted` |  |
+| `palo-untrusted` |  |
+
+### Approved VM images
+
+On first deployment we need to accept terms of use for the Palo Alto VMs.  This should only need to be run once for the subscription.
+
+```
+az vm image accept-terms --urn paloaltonetworks:vmseries1:bundle2:latest --subscription $SUBSCRIPTION
+```
 
 ## Consuming
 
