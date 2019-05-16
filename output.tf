@@ -47,3 +47,15 @@ output "untrusted_ips_ip_address" {
 output "cluster_size" {
   value = "${var.cluster_size}"
 }
+
+output "mgmt_subnet_id" {
+  value = "${data.azurerm_subnet.mgmt_subnet.id}"
+}
+
+output "trusted_subnet_id" {
+  value = "${data.azurerm_subnet.trusted_subnet.id}"
+}
+
+output "untrusted_subnet_id" {
+  value = "${data.azurerm_subnet.untrusted_subnet.id}"
+}
