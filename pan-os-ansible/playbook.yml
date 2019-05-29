@@ -41,3 +41,7 @@
         ip_address: '{{ mgmt_ip }}'
         username: '{{ username }}'
         password: '{{ password }}'
+      retries: 4
+      delay: 30
+      register: result
+      until: result.rc == 0
