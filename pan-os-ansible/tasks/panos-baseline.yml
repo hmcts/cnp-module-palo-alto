@@ -74,7 +74,7 @@
     template:
       src: templates/panos-baseline-ctsc.xml.j2
       dest: "{{ playbook_dir }}/panos-baseline.xml"
-    when: is_ctsc is defined    
+    when: is_ctsc == "true"  
 
   - name: Upload base configuration
     panos_import:
