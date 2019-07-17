@@ -58,17 +58,11 @@
     set_fact:
       log_phash: '{{ log_phash_result.matches[0].phash }}'
 
-  - name: Create base configuration from template
+  - name: Create base configuration from template (Standard)
     template:
       src: templates/panos-baseline.xml.j2
       dest: "{{ playbook_dir }}/panos-baseline.xml"
     when: is_ctsc is undefined
-
-  - name: Create base configuration from template
-    template:
-      src: templates/panos-baseline.xml.j2
-      dest: "{{ playbook_dir }}/panos-baseline.xml"
-    when: is_ctsc is undefined    
 
   - name: Create base configuration from template (CTSC)
     template:
