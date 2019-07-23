@@ -19,3 +19,6 @@ pan-os-ansible/playbook.retry
 
 venv/
 roles/
+
+# Vim swap files
+*.sw*
