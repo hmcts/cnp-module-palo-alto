@@ -15,6 +15,7 @@ data "template_file" "host_vars_template" {
     log_password             = "${data.azurerm_key_vault_secret.pan_log_password.value}"
     trusted_destination_ip   = "${var.trusted_destination_ip}"
     trusted_destination_host = "${var.trusted_destination_host}"
+    is_ctsc                  = "${var.is_ctsc}"
   }
 }
 

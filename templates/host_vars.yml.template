@@ -11,6 +11,4 @@ username: "${username}"
 password: "${password}"
 log_username: "${log_username}"
 log_password: "${log_password}"
-
-
-
+is_ctsc: "{is_ctsc}"
