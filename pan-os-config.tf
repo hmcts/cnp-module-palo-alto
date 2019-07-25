@@ -73,6 +73,8 @@ resource "null_resource" "panos_settings" {
                 ansible-galaxy install -r ${path.module}/pan-os-ansible/requirements.yml --roles-path=${path.module}/roles
                 ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml -vv
               EOF
+
+              interpreter = ["/bin/bash", "-c"]
   }
 
   triggers = {
