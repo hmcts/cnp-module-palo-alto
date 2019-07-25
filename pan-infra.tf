@@ -193,7 +193,9 @@ resource "azurerm_network_interface" "trusted_nic" {
   resource "azurerm_managed_disk" "os_disk" {
     name                  = "${var.product}-pan-${count.index}-${var.env}"
     storage_account_type  = "Standard_LRS"
-    create_option     = "FromImage"
+    create_option         = "FromImage"
+    location              = "${var.resource_group_location}"
+    resource_group_name   = "${azurerm_resource_group.resource_group.name}"
   }
 
 resource "azurerm_virtual_machine" "pan_vm" {
