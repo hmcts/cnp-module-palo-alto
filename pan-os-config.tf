@@ -53,6 +53,10 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
+                #!/bin/bash
+                
+                set -ex
+
                 PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 if [ ! -d "${path.module}/venv" ]; then
