@@ -195,7 +195,6 @@ data "azurerm_platform_image" "panos" {
   publisher = "${var.marketplace_publisher}"
   offer     = "${var.marketplace_offer}"
   sku       = "${var.marketplace_sku}"
-  version   = "8.0.0"
 }
 
 resource "azurerm_managed_disk" "os_disk" {
