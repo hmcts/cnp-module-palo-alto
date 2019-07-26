@@ -204,7 +204,6 @@ resource "azurerm_managed_disk" "os_disk" {
   location              = "${var.resource_group_location}"
   resource_group_name   = "${azurerm_resource_group.resource_group.name}"
   image_reference_id    = "${data.azurerm_platform_image.panos.id}"
-  os_type               = "Linux"
 }
 
 resource "azurerm_virtual_machine" "pan_vm" {
@@ -229,6 +228,7 @@ resource "azurerm_virtual_machine" "pan_vm" {
   #}
 
   storage_os_disk {
+    os_type           = "Linux"
     name              = "${var.product}-pan-${count.index}-${var.env}"
     create_option     = "Attach"
     managed_disk_id   = "${azurerm_managed_disk.os_disk.id}"
