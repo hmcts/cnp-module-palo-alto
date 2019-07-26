@@ -229,8 +229,10 @@ resource "azurerm_virtual_machine" "pan_vm" {
 
   storage_os_disk {
     name              = "${var.product}-pan-${count.index}-${var.env}"
-    create_option     = "attach"
+    create_option     = "Attach"
     managed_disk_id   = "${azurerm_managed_disk.os_disk.id}"
+    managed_disk_type = "Standard_LRS"
+    caching           = "ReadWrite"
   }
 
   os_profile {
