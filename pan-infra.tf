@@ -220,12 +220,12 @@ resource "azurerm_virtual_machine" "pan_vm" {
     product   = "${var.marketplace_offer}"
   }
 
-  storage_image_reference {
-    publisher = "${var.marketplace_publisher}"
-    offer     = "${var.marketplace_offer}"
-    sku       = "${var.marketplace_sku}"
-    version   = "8.0.0"
-  }
+  #storage_image_reference {
+    #publisher = "${var.marketplace_publisher}"
+    #offer     = "${var.marketplace_offer}"
+    #sku       = "${var.marketplace_sku}"
+    #version   = "8.0.0"
+  #}
 
   storage_os_disk {
     name              = "${var.product}-pan-${count.index}-${var.env}"
