@@ -190,13 +190,22 @@ resource "azurerm_network_interface" "trusted_nic" {
   tags = "${var.common_tags}"
 }
 
-  resource "azurerm_managed_disk" "os_disk" {
-    name                  = "${var.product}-pan-${count.index}-${var.env}"
-    storage_account_type  = "Standard_LRS"
-    create_option         = "FromImage"
-    location              = "${var.resource_group_location}"
-    resource_group_name   = "${azurerm_resource_group.resource_group.name}"
-  }
+data "azurerm_platform_image" "panos" {
+  location  = "${var.resource_group_location}"
+  publisher = "${var.marketplace_publisher}"
+  offer     = "${var.marketplace_offer}"
+  sku       = "${var.marketplace_sku}"
+  version   = "8.0.0"
+}
+
+resource "azurerm_managed_disk" "os_disk" {
+  name                  = "${var.product}-pan-${count.index}-${var.env}"
+  storage_account_type  = "Standard_LRS"
+  create_option         = "FromImage"
+  location              = "${var.resource_group_location}"
+  resource_group_name   = "${azurerm_resource_group.resource_group.name}"
+  image_reference_id    = "${data.azurerm_platform_image.panos.id}"
+}
 
 resource "azurerm_virtual_machine" "pan_vm" {
   name                = "${var.product}-pan-${count.index}-${var.env}"
