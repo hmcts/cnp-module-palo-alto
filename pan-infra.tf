@@ -204,6 +204,7 @@ resource "azurerm_managed_disk" "os_disk" {
   location              = "${var.resource_group_location}"
   resource_group_name   = "${azurerm_resource_group.resource_group.name}"
   image_reference_id    = "${data.azurerm_platform_image.panos.id}"
+  os_type               = "Linux"
 }
 
 resource "azurerm_virtual_machine" "pan_vm" {
@@ -233,7 +234,6 @@ resource "azurerm_virtual_machine" "pan_vm" {
     managed_disk_id   = "${azurerm_managed_disk.os_disk.id}"
     managed_disk_type = "Standard_LRS"
     caching           = "ReadWrite"
-    os_type           = "Linux"
   }
 
   os_profile {
