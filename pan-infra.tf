@@ -233,6 +233,7 @@ resource "azurerm_virtual_machine" "pan_vm" {
     managed_disk_id   = "${azurerm_managed_disk.os_disk.id}"
     managed_disk_type = "Standard_LRS"
     caching           = "ReadWrite"
+    os_type           = "Linux"
   }
 
   os_profile {
