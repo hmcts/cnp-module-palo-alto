@@ -190,22 +190,6 @@ resource "azurerm_network_interface" "trusted_nic" {
   tags = "${var.common_tags}"
 }
 
-data "azurerm_platform_image" "panos" {
-  location  = "${var.resource_group_location}"
-  publisher = "${var.marketplace_publisher}"
-  offer     = "${var.marketplace_offer}"
-  sku       = "${var.marketplace_sku}"
-}
-
-resource "azurerm_managed_disk" "os_disk" {
-  name                  = "${var.product}-pan-${count.index}-${var.env}"
-  storage_account_type  = "Standard_LRS"
-  create_option         = "FromImage"
-  location              = "${var.resource_group_location}"
-  resource_group_name   = "${azurerm_resource_group.resource_group.name}"
-  image_reference_id    = "${data.azurerm_platform_image.panos.id}"
-  #os_type               = "Linux"
-}
 
 resource "azurerm_virtual_machine" "pan_vm" {
   name                = "${var.product}-pan-${count.index}-${var.env}"
@@ -221,20 +205,18 @@ resource "azurerm_virtual_machine" "pan_vm" {
     product   = "${var.marketplace_offer}"
   }
 
-  #storage_image_reference {
-    #publisher = "${var.marketplace_publisher}"
-    #offer     = "${var.marketplace_offer}"
-    #sku       = "${var.marketplace_sku}"
-    #version   = "8.0.0"
-  #}
+  storage_image_reference {
+    publisher = "${var.marketplace_publisher}"
+    offer     = "${var.marketplace_offer}"
+    sku       = "${var.marketplace_sku}"
+    version   = "latest"
+  }
 
   storage_os_disk {
-    os_type           = "Linux"
     name              = "${var.product}-pan-${count.index}-${var.env}"
-    create_option     = "Attach"
-    managed_disk_id   = "${azurerm_managed_disk.os_disk.id}"
     managed_disk_type = "Standard_LRS"
     caching           = "ReadWrite"
+    create_option     = "FromImage"
   }
 
   os_profile {
