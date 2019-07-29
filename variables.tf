@@ -1,9 +1,3 @@
-variable "is_ctsc" {
-  type = "string"
-  description = "Boolean to be passed through to ansible"
-  default = "no"
-}
-
 variable "product" {}
 
 variable "env" {}
