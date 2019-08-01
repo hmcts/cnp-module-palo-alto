@@ -156,6 +156,15 @@ resource "azurerm_network_interface" "mgmt_nic" {
   tags = "${var.common_tags}"
 }
 
+resource "azurerm_public_ip" "pip_untrusted" {
+  name                = "${var.product}-pip-${count.index}-${var.env}"
+  location            = "${azurerm_resource_group.resource_group.location}"
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  allocation_method   = "Static"
+  tags                = "${var.common_tags}"
+  count               = "${var.cluster_size}"
+}
+
 resource "azurerm_network_interface" "untrusted_nic" {
   name                = "${var.product}-pan-untrusted-${count.index}-${var.env}"
   location            = "${var.resource_group_location}"
@@ -168,6 +177,7 @@ resource "azurerm_network_interface" "untrusted_nic" {
     name                          = "${join("", list("ipconfig", "1"))}"
     subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
+    public_ip_address_id          = "${element(azurerm_public_ip.pip_untrusted.*.id, count.index)}"
   }
 
   tags = "${var.common_tags}"
