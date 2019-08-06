@@ -175,7 +175,7 @@ resource "azurerm_network_interface" "untrusted_nic" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = "${join("", list("ipconfig", "1"))}"
+    name                          = "${var.product}-pan-untrusted"
     subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
     public_ip_address_id          = "${element(azurerm_public_ip.pip_untrusted.*.id, count.index)}"
@@ -290,5 +290,52 @@ resource "azurerm_network_interface_backend_address_pool_association" "nic_trust
   network_interface_id    = "${element(azurerm_network_interface.trusted_nic.*.id, count.index)}"
   ip_configuration_name   = "${var.product}-pan-trusted"
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool.id}"
+  count                   = "2"
+}
+
+resource "azurerm_lb" "palo_ilb-untrust" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  name                = "${var.product}-pan-elb"
+  location            = "${var.resource_group_location}"
+  sku                 = "Standard"
+
+  frontend_ip_configuration {
+    name                          = "LoadBalancerFrontEnd"
+    subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "backend_pool2" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb-untrust.id}"
+  name                = "PaloUnTrustBackendPool"
+}
+
+resource "azurerm_lb_rule" "all2" {
+  resource_group_name             = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id                 = "${azurerm_lb.palo_ilb-untrust.id}"
+  name                            = "ALL"
+  protocol                        = "All"
+  frontend_port                   = 0
+  backend_port                    = 0
+  frontend_ip_configuration_name  = "LoadBalancerFrontEnd"
+  enable_floating_ip             = false
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.backend_pool2.id}"
+  probe_id                       = "${azurerm_lb_probe.HTTPS2.id}"
+}
+
+resource "azurerm_lb_probe" "HTTPS2" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb-untrust.id}"
+  name                = "HTTPS"
+  port                = 443
+  interval_in_seconds = 5
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "nic_untrust_lb" {
+  network_interface_id    = "${element(azurerm_network_interface.untrusted_nic.*.id, count.index)}"
+  ip_configuration_name   = "${var.product}-pan-untrusted"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool2.id}"
   count                   = "2"
 }
