@@ -287,7 +287,7 @@ resource "azurerm_lb_probe" "HTTPS" {
 
 resource "azurerm_network_interface_backend_address_pool_association" "nic_trust_lb" {
   network_interface_id    = "${element(azurerm_network_interface.trusted_nic.*.id, count.index)}"
-  ip_configuration_name   = "${var.product}-trusted-${count.index}"
+  ip_configuration_name   = "${var.product}-nic-trust"
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool.id}"
   count                   = "2"
 }
