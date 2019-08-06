@@ -192,7 +192,7 @@ resource "azurerm_network_interface" "trusted_nic" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = "${var.product}-pan-trusted
+    name                          = "${var.product}-pan-trusted"
     subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
   }
