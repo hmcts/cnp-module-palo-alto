@@ -284,3 +284,10 @@ resource "azurerm_lb_probe" "HTTPS" {
   port                = 443
   interval_in_seconds = 5
 }
+
+resource "azurerm_network_interface_backend_address_pool_association" "nic_trust_lb" {
+  network_interface_id    = "${element(azurerm_network_interface.trusted_nic.*.id, count.index)}"
+  ip_configuration_name   = "${var.product}-trusted-${count.index}"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool.id}"
+  count                   = "2"
+}
