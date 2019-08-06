@@ -163,6 +163,7 @@ resource "azurerm_public_ip" "pip_untrusted" {
   allocation_method   = "Static"
   tags                = "${var.common_tags}"
   count               = "${var.cluster_size}"
+  sku                 = "Standard"
 }
 
 resource "azurerm_network_interface" "untrusted_nic" {
