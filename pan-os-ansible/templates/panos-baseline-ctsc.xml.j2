@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="8.1.0" urldb="paloaltonetworks">
+<config version="9.0.0" urldb="paloaltonetworks">
   <mgt-config>
     <users>
       <entry name="admin">
@@ -10,16 +10,16 @@
           </role-based>
         </permissions>
       </entry>
-      <entry name="{{ username }}">
-        <phash>{{ phash }}</phash>
+      <entry name="reform-pan-admin">
+        <phash>$1$lrvikuuw$IhmEvkUtVTY0wKUoFBwvE1</phash>
         <permissions>
           <role-based>
             <superuser>yes</superuser>
           </role-based>
         </permissions>
       </entry>
-      <entry name="{{ log_username }}">
-        <phash>{{ log_phash }}</phash>
+      <entry name="pantest">
+        <phash>$1$ygkjcipo$VcealVNUol7sfkJkKLtbQ.</phash>
         <permissions>
           <role-based>
             <superuser>yes</superuser>
@@ -132,7 +132,7 @@
           </device>
         </role>
       </entry>
-    </admin-role>    
+    </admin-role>
   </shared>
   <devices>
     <entry name="localhost.localdomain">
@@ -157,11 +157,7 @@
                 <dhcp-client>
                   <create-default-route>no</create-default-route>
                 </dhcp-client>
-                <arp>
-                  <entry name="10.90.0.1">
-                    <hw-address>12:34:56:78:90:ab</hw-address>
-                  </entry>
-                </arp>
+                <interface-management-profile>management</interface-management-profile>
               </layer3>
             </entry>
             <entry name="ethernet1/2">
@@ -182,6 +178,7 @@
                 <dhcp-client>
                   <create-default-route>no</create-default-route>
                 </dhcp-client>
+                <interface-management-profile>management</interface-management-profile>
               </layer3>
             </entry>
           </ethernet>
@@ -196,9 +193,10 @@
           </monitor-profile>
           <interface-management-profile>
             <entry name="management">
-              <http>no</http>
+              <http>yes</http>
               <ssh>yes</ssh>
               <ping>yes</ping>
+              <https>yes</https>
             </entry>
           </interface-management-profile>
           <zone-protection-profile>
@@ -440,7 +438,7 @@
                       <hold-time>2</hold-time>
                     </path-monitor>
                     <nexthop>
-                      <ip-address>{{ untrusted_nexthop }}</ip-address>
+                      <ip-address>10.100.150.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -448,25 +446,6 @@
                     <interface>ethernet1/1</interface>
                     <metric>10</metric>
                     <destination>0.0.0.0/0</destination>
-                    <route-table>
-                      <unicast/>
-                    </route-table>
-                  </entry>
-                  <entry name="protected-route">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
-                    <nexthop>
-                      <ip-address>{{ trusted_nexthop }}</ip-address>
-                    </nexthop>
-                    <bfd>
-                      <profile>None</profile>
-                    </bfd>
-                    <interface>ethernet1/2</interface>
-                    <metric>10</metric>
-                    <destination>{{ trusted_destination_ip }}/32</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -547,7 +526,7 @@
                   <accept-dhcp-domain>no</accept-dhcp-domain>
                 </dhcp-client>
               </type>
-              <username>{{ username }}</username>
+              <username>reform-pan-admin</username>
             </initcfg>
           </management>
           <session>
@@ -584,7 +563,69 @@
           <rulebase>
             <security>
               <rules>
-                <entry name="allow_http">
+                <entry name="health_probes" uuid="a70e1642-6d91-4d5a-a248-7556f3d6fbef">
+                  <to>
+                    <member>any</member>
+                  </to>
+                  <from>
+                    <member>any</member>
+                  </from>
+                  <source>
+                    <member>168.63.129.16</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>any</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-end>no</log-end>
+                </entry>
+                <entry name="outbound_mysql" uuid="3d6fcbbe-69c6-4e6c-96ce-c5a29b2a1c86">
+                  <to>
+                    <member>untrust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>51.140.184.11</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>mysql</member>
+                  </application>
+                  <service>
+                    <member>any</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-start>yes</log-start>
+                </entry>
+                <entry name="email_traffic" uuid="5460474a-664d-45eb-b6c8-b0668e379305">
                   <to>
                     <member>any</member>
                   </to>
@@ -604,11 +645,15 @@
                     <member>any</member>
                   </category>
                   <application>
+                    <member>gmx-mail</member>
+                    <member>imap</member>
+                    <member>ping</member>
+                    <member>smtp</member>
                     <member>ssl</member>
                     <member>web-browsing</member>
                   </application>
                   <service>
-                    <member>application-default</member>
+                    <member>any</member>
                   </service>
                   <hip-profiles>
                     <member>any</member>
@@ -641,7 +686,7 @@
             </security>
             <nat>
               <rules>
-                <entry name="outside">
+                <entry name="inside" uuid="6c02dc62-16f4-4916-9f24-5918edab436f">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -650,24 +695,40 @@
                     </dynamic-ip-and-port>
                   </source-translation>
                   <to>
-                    <member>untrust</member>
+                    <member>trust</member>
                   </to>
                   <from>
-                    <member>any</member>
+                    <member>untrust</member>
                   </from>
                   <source>
                     <member>any</member>
                   </source>
                   <destination>
-                    <member>{{ untrusted_ip }}</member>
+                    <member>any</member>
                   </destination>
                   <service>any</service>
-                  <destination-translation>
-                    <translated-address>trusted-ip</translated-address>
-                  </destination-translation>
-                  <to-interface>any</to-interface>
-                  <nat-type>ipv4</nat-type>
-                  <disabled>no</disabled>
+                </entry>
+                <entry name="outside" uuid="22cbc57e-a262-4ff9-964c-549314d81946">
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/1</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>untrust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <service>any</service>
                 </entry>
               </rules>
             </nat>
@@ -685,7 +746,7 @@
           </import>
           <address>
             <entry name="trusted-ip">
-              <ip-netmask>{{ trusted_destination_ip }}</ip-netmask>
+              <ip-netmask>10.100.149.17</ip-netmask>
             </entry>
           </address>
           <profiles>
@@ -982,7 +1043,6 @@
                     <member>weapons</member>
                   </block>
                 </credential-enforcement>
-                <action>block</action>
                 <log-http-hdr-user-agent>no</log-http-hdr-user-agent>
                 <block>
                   <member>abused-drugs</member>
@@ -997,6 +1057,7 @@
                 </block>
               </entry>
             </url-filtering>
+            <custom-url-category/>
           </profiles>
           <log-settings>
             <profiles>
