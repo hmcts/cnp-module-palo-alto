@@ -309,7 +309,7 @@ resource "azurerm_lb_backend_address_pool" "backend_pool2" {
 resource "azurerm_lb_rule" "all2" {
   resource_group_name             = "${azurerm_resource_group.resource_group.name}"
   loadbalancer_id                 = "${azurerm_lb.palo_ilb.id}"
-  name                            = "ALL"
+  name                            = "ALL2"
   protocol                        = "All"
   frontend_port                   = 0
   backend_port                    = 0
