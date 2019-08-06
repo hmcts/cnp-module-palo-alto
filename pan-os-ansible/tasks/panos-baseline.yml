@@ -68,7 +68,7 @@
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      file: "{{ playbook_dir }}/panos-baseline.xml"
+      file: "{{ playbook_dir }}/panos-baseline-ctsc.xml"
       category: "configuration"
     register: result
 
