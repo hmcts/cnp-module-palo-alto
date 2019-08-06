@@ -451,6 +451,25 @@
                     </route-table>
                   </entry>
                   <entry name="trust">
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.0.0.0/8</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="temp">
                     <path-monitor>
                       <enable>no</enable>
                       <failure-condition>any</failure-condition>
@@ -464,7 +483,7 @@
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>10.0.0.0/8</destination>
+                    <destination>168.63.129.16/32</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -582,7 +601,7 @@
           <rulebase>
             <security>
               <rules>
-                <entry name="health_probes" uuid="0b45ac2a-12b9-43e6-921f-97384ff9a236">
+                <entry name="health_probes" uuid="1094006f-d133-4691-bf29-eb9ac1be7ae2">
                   <to>
                     <member>any</member>
                   </to>
@@ -612,8 +631,9 @@
                   </hip-profiles>
                   <action>allow</action>
                   <log-end>no</log-end>
+                  <log-start>no</log-start>
                 </entry>
-                <entry name="spokes_management" uuid="74d5d6f8-bc13-4f25-8c3a-707b28865dad">
+                <entry name="spokes_management" uuid="f0ed4061-1812-4339-8d94-d61cd1c03b22">
                   <to>
                     <member>trust</member>
                   </to>
@@ -645,7 +665,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="outbound_mysql" uuid="a7c1387c-3985-4bc1-be68-c3f1f8fb8cb6">
+                <entry name="outbound_mysql" uuid="f4add48b-71c8-4625-9c5c-dc0fd63b0928">
                   <to>
                     <member>untrust</member>
                   </to>
@@ -676,7 +696,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="email_traffic" uuid="2859543f-6878-4ef8-8af5-d15f51707810">
+                <entry name="email_traffic" uuid="b34c7382-961b-4d67-bfcf-728060dc10c5">
                   <to>
                     <member>any</member>
                   </to>
@@ -737,7 +757,7 @@
             </security>
             <nat>
               <rules>
-                <entry name="inside" uuid="76b9e645-33b1-47d9-a42f-8889494d7942">
+                <entry name="inside" uuid="77a3d709-c641-4976-b65a-d5ccab3864ef">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -759,7 +779,7 @@
                   </destination>
                   <service>any</service>
                 </entry>
-                <entry name="outside" uuid="f61ca8f6-4182-4b84-a6e7-fc391a76b078">
+                <entry name="outside" uuid="6dfa36a8-b7b4-47b6-afca-dbd7d24ed4a9">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -781,7 +801,7 @@
                   </destination>
                   <service>any</service>
                 </entry>
-                <entry name="trust" uuid="c5f8fa07-74da-4ff4-acf8-cbdb11317adf">
+                <entry name="trust" uuid="ae95f699-66e4-4ac6-a9e1-0c7e594a2e39">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
