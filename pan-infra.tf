@@ -244,3 +244,43 @@ resource "azurerm_virtual_machine" "pan_vm" {
 
   tags = "${var.common_tags}"
 }
+
+resource "azurerm_lb" "palo_ilb" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  name                = "${var.product}-pan-ilb"
+  location            = "${var.resource_group_location}"
+  sku                 = "Standard"
+
+  frontend_ip_configuration {
+    name                          = "LoadBalancerFrontEnd"
+    subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "backend_pool" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb.id}"
+  name                = "PaloTrustBackendPool"
+}
+
+resource "azurerm_lb_rule" "all" {
+  resource_group_name             = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id                 = "${azurerm_lb.palo_ilb.id}"
+  name                            = "ALL"
+  protocol                        = "any"
+  frontend_port                   = 0
+  backend_port                    = 0
+  frontend_ip_configuration_name  = "LoadBalancerFrontEnd"
+  enable_floating_ip             = false
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.backend_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.HTTPS.id}"
+}
+
+resource "azurerm_lb_probe" "HTTPS" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb.id}"
+  name                = "HTTPS"
+  port                = 443
+  interval_in_seconds = 5
+}
