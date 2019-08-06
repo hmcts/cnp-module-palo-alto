@@ -432,20 +432,39 @@
               <ip>
                 <static-route>
                   <entry name="gateway">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.150.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <interface>ethernet1/1</interface>
                     <metric>10</metric>
                     <destination>0.0.0.0/0</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="trust">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.0.0.0/8</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -563,7 +582,7 @@
           <rulebase>
             <security>
               <rules>
-                <entry name="health_probes" uuid="a70e1642-6d91-4d5a-a248-7556f3d6fbef">
+                <entry name="health_probes" uuid="0b45ac2a-12b9-43e6-921f-97384ff9a236">
                   <to>
                     <member>any</member>
                   </to>
@@ -594,7 +613,39 @@
                   <action>allow</action>
                   <log-end>no</log-end>
                 </entry>
-                <entry name="outbound_mysql" uuid="3d6fcbbe-69c6-4e6c-96ce-c5a29b2a1c86">
+                <entry name="spokes_management" uuid="74d5d6f8-bc13-4f25-8c3a-707b28865dad">
+                  <to>
+                    <member>trust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>10.99.196.14</member>
+                  </source>
+                  <destination>
+                    <member>10.230.0.0/23</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>ping</member>
+                    <member>ssh</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-start>yes</log-start>
+                </entry>
+                <entry name="outbound_mysql" uuid="a7c1387c-3985-4bc1-be68-c3f1f8fb8cb6">
                   <to>
                     <member>untrust</member>
                   </to>
@@ -625,7 +676,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="email_traffic" uuid="5460474a-664d-45eb-b6c8-b0668e379305">
+                <entry name="email_traffic" uuid="2859543f-6878-4ef8-8af5-d15f51707810">
                   <to>
                     <member>any</member>
                   </to>
@@ -686,7 +737,7 @@
             </security>
             <nat>
               <rules>
-                <entry name="inside" uuid="6c02dc62-16f4-4916-9f24-5918edab436f">
+                <entry name="inside" uuid="76b9e645-33b1-47d9-a42f-8889494d7942">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -708,7 +759,7 @@
                   </destination>
                   <service>any</service>
                 </entry>
-                <entry name="outside" uuid="22cbc57e-a262-4ff9-964c-549314d81946">
+                <entry name="outside" uuid="f61ca8f6-4182-4b84-a6e7-fc391a76b078">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -727,6 +778,28 @@
                   </source>
                   <destination>
                     <member>any</member>
+                  </destination>
+                  <service>any</service>
+                </entry>
+                <entry name="trust" uuid="c5f8fa07-74da-4ff4-acf8-cbdb11317adf">
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/2</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>trust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>10.99.196.14</member>
+                  </source>
+                  <destination>
+                    <member>10.230.0.0/23</member>
                   </destination>
                   <service>any</service>
                 </entry>
