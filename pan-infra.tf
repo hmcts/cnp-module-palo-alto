@@ -268,7 +268,7 @@ resource "azurerm_lb_rule" "all" {
   resource_group_name             = "${azurerm_resource_group.resource_group.name}"
   loadbalancer_id                 = "${azurerm_lb.palo_ilb.id}"
   name                            = "ALL"
-  protocol                        = "any"
+  protocol                        = "All"
   frontend_port                   = 0
   backend_port                    = 0
   frontend_ip_configuration_name  = "LoadBalancerFrontEnd"
