@@ -293,44 +293,24 @@ resource "azurerm_network_interface_backend_address_pool_association" "nic_trust
   count                   = "2"
 }
 
-resource "azurerm_lb" "palo_ilb-untrust" {
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  name                = "${var.product}-pan-elb"
-  location            = "${var.resource_group_location}"
-  sku                 = "Standard"
-
-  frontend_ip_configuration {
-    name                          = "LoadBalancerFrontEnd"
-    subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
-    private_ip_address_allocation = "dynamic"
-  }
-}
 
 resource "azurerm_lb_backend_address_pool" "backend_pool2" {
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  loadbalancer_id     = "${azurerm_lb.palo_ilb-untrust.id}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb.id}"
   name                = "PaloUnTrustBackendPool"
 }
 
 resource "azurerm_lb_rule" "all2" {
   resource_group_name             = "${azurerm_resource_group.resource_group.name}"
-  loadbalancer_id                 = "${azurerm_lb.palo_ilb-untrust.id}"
+  loadbalancer_id                 = "${azurerm_lb.palo_ilb.id}"
   name                            = "ALL"
   protocol                        = "All"
   frontend_port                   = 0
   backend_port                    = 0
-  frontend_ip_configuration_name  = "LoadBalancerFrontEnd"
+  frontend_ip_configuration_name  = "LoadBalancerFrontEndUnTrust"
   enable_floating_ip             = false
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.backend_pool2.id}"
-  probe_id                       = "${azurerm_lb_probe.HTTPS2.id}"
-}
-
-resource "azurerm_lb_probe" "HTTPS2" {
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
-  loadbalancer_id     = "${azurerm_lb.palo_ilb-untrust.id}"
-  name                = "HTTPS"
-  port                = 443
-  interval_in_seconds = 5
+  probe_id                       = "${azurerm_lb_probe.HTTPS.id}"
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "nic_untrust_lb" {
