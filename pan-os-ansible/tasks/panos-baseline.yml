@@ -60,8 +60,8 @@
 
   - name: Create base configuration from template (Standard)
     template:
-      src: templates/panos-baseline.xml.j2
-      dest: "{{ playbook_dir }}/panos-baseline.xml"
+      src: templates/panos-baseline-ctsc.xml.j2
+      dest: "{{ playbook_dir }}/panos-baseline-ctsc.xml"
 
   - name: Upload base configuration
     panos_import:
