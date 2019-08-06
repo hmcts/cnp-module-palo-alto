@@ -192,7 +192,7 @@ resource "azurerm_network_interface" "trusted_nic" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = "${join("", list("ipconfig", "2"))}"
+    name                          = "${var.product}-pan-trusted
     subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
   }
@@ -287,7 +287,7 @@ resource "azurerm_lb_probe" "HTTPS" {
 
 resource "azurerm_network_interface_backend_address_pool_association" "nic_trust_lb" {
   network_interface_id    = "${element(azurerm_network_interface.trusted_nic.*.id, count.index)}"
-  ip_configuration_name   = "${var.product}-nic-trust"
+  ip_configuration_name   = "${var.product}-pan-trusted"
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool.id}"
   count                   = "2"
 }
