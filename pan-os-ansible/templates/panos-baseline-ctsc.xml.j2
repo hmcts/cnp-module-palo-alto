@@ -464,26 +464,7 @@
                     </path-monitor>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>10.0.0.0/8</destination>
-                    <route-table>
-                      <unicast/>
-                    </route-table>
-                  </entry>
-                  <entry name="temp">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
-                    <nexthop>
-                      <ip-address>10.100.149.1</ip-address>
-                    </nexthop>
-                    <bfd>
-                      <profile>None</profile>
-                    </bfd>
-                    <interface>ethernet1/2</interface>
-                    <metric>10</metric>
-                    <destination>168.63.129.16/32</destination>
+                    <destination>10.230.0.0/23</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -601,7 +582,7 @@
           <rulebase>
             <security>
               <rules>
-                <entry name="health_probes" uuid="1094006f-d133-4691-bf29-eb9ac1be7ae2">
+                <entry name="health_probes" uuid="97e70772-6631-49a7-aa9c-5cb9cc601718">
                   <to>
                     <member>any</member>
                   </to>
@@ -633,12 +614,12 @@
                   <log-end>no</log-end>
                   <log-start>no</log-start>
                 </entry>
-                <entry name="spokes_management" uuid="f0ed4061-1812-4339-8d94-d61cd1c03b22">
+                <entry name="spokes_management" uuid="47df1187-45ce-4262-a862-7528c59a63e9">
                   <to>
                     <member>trust</member>
                   </to>
                   <from>
-                    <member>trust</member>
+                    <member>untrust</member>
                   </from>
                   <source>
                     <member>10.99.196.14</member>
@@ -665,7 +646,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="outbound_mysql" uuid="f4add48b-71c8-4625-9c5c-dc0fd63b0928">
+                <entry name="outbound_mysql" uuid="804198a1-80b9-4ce5-ba3d-40988f7172ce">
                   <to>
                     <member>untrust</member>
                   </to>
@@ -696,7 +677,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="email_traffic" uuid="b34c7382-961b-4d67-bfcf-728060dc10c5">
+                <entry name="email_traffic" uuid="89d31b33-7402-4670-b6e7-dd1de2f603e0">
                   <to>
                     <member>any</member>
                   </to>
@@ -757,7 +738,7 @@
             </security>
             <nat>
               <rules>
-                <entry name="inside" uuid="77a3d709-c641-4976-b65a-d5ccab3864ef">
+                <entry name="inside" uuid="7b9f4369-3ac1-478b-bc99-437699df31e4">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -779,7 +760,7 @@
                   </destination>
                   <service>any</service>
                 </entry>
-                <entry name="outside" uuid="6dfa36a8-b7b4-47b6-afca-dbd7d24ed4a9">
+                <entry name="outside" uuid="8d25a769-04f9-4c99-ba0a-57f45d73d21e">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -798,28 +779,6 @@
                   </source>
                   <destination>
                     <member>any</member>
-                  </destination>
-                  <service>any</service>
-                </entry>
-                <entry name="trust" uuid="ae95f699-66e4-4ac6-a9e1-0c7e594a2e39">
-                  <source-translation>
-                    <dynamic-ip-and-port>
-                      <interface-address>
-                        <interface>ethernet1/2</interface>
-                      </interface-address>
-                    </dynamic-ip-and-port>
-                  </source-translation>
-                  <to>
-                    <member>trust</member>
-                  </to>
-                  <from>
-                    <member>trust</member>
-                  </from>
-                  <source>
-                    <member>10.99.196.14</member>
-                  </source>
-                  <destination>
-                    <member>10.230.0.0/23</member>
                   </destination>
                   <service>any</service>
                 </entry>
