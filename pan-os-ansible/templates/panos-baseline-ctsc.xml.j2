@@ -469,6 +469,25 @@
                       <unicast/>
                     </route-table>
                   </entry>
+                  <entry name="trust-temp">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>168.63.129.16/32</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
                 </static-route>
               </ip>
             </routing-table>
@@ -529,6 +548,9 @@
             <disable-http>yes</disable-http>
           </service>
           <hostname>palo</hostname>
+          <route>
+            <service/>
+          </route>
         </system>
         <setting>
           <config>
@@ -582,7 +604,7 @@
           <rulebase>
             <security>
               <rules>
-                <entry name="health_probes" uuid="97e70772-6631-49a7-aa9c-5cb9cc601718">
+                <entry name="health_probes" uuid="6def03f2-29be-41de-90bf-88f38845df17">
                   <to>
                     <member>any</member>
                   </to>
@@ -614,7 +636,7 @@
                   <log-end>no</log-end>
                   <log-start>no</log-start>
                 </entry>
-                <entry name="spokes_management" uuid="47df1187-45ce-4262-a862-7528c59a63e9">
+                <entry name="spokes_management" uuid="c6a075c8-9073-47ab-bec7-6d04c91a4821">
                   <to>
                     <member>trust</member>
                   </to>
@@ -646,7 +668,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="outbound_mysql" uuid="804198a1-80b9-4ce5-ba3d-40988f7172ce">
+                <entry name="outbound_mysql" uuid="96fa53d0-ceae-4878-84ed-692ef89b3d4e">
                   <to>
                     <member>untrust</member>
                   </to>
@@ -677,7 +699,7 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                 </entry>
-                <entry name="email_traffic" uuid="89d31b33-7402-4670-b6e7-dd1de2f603e0">
+                <entry name="email_traffic" uuid="0fda384f-a18a-4b35-b9d9-08da7e2610b1">
                   <to>
                     <member>any</member>
                   </to>
@@ -738,7 +760,7 @@
             </security>
             <nat>
               <rules>
-                <entry name="inside" uuid="7b9f4369-3ac1-478b-bc99-437699df31e4">
+                <entry name="inside" uuid="b08a2464-e6ab-4618-82ee-c96bfe78ed23">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -760,7 +782,7 @@
                   </destination>
                   <service>any</service>
                 </entry>
-                <entry name="outside" uuid="8d25a769-04f9-4c99-ba0a-57f45d73d21e">
+                <entry name="outside" uuid="befa5494-65d8-453b-8063-2156d8ef8b2b">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
