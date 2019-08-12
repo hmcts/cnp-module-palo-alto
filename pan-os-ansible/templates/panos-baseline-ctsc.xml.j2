@@ -759,7 +759,6 @@
                   </category>
                   <application>
                     <member>gmx-mail</member>
-                    <member>google-base</member>
                     <member>imap</member>
                     <member>ping</member>
                     <member>smtp</member>
@@ -767,7 +766,7 @@
                     <member>web-browsing</member>
                   </application>
                   <service>
-                    <member>any</member>
+                    <member>application-default</member>
                   </service>
                   <hip-profiles>
                     <member>any</member>
@@ -816,12 +815,14 @@
                     <member>any</member>
                   </category>
                   <application>
+                    <member>apt-get</member>
                     <member>dns</member>
                     <member>google-base</member>
+                    <member>ssl</member>
                     <member>web-browsing</member>
                   </application>
                   <service>
-                    <member>any</member>
+                    <member>application-default</member>
                   </service>
                   <hip-profiles>
                     <member>any</member>
@@ -829,6 +830,37 @@
                   <action>allow</action>
                   <log-start>yes</log-start>
                   <rule-type>universal</rule-type>
+                </entry>
+                <entry name="deny-all" uuid="c25c4a5e-f7e6-4723-8214-012d967e5559">
+                  <to>
+                    <member>any</member>
+                  </to>
+                  <from>
+                    <member>any</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>any</member>
+                  </application>
+                  <service>
+                    <member>any</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>deny</action>
+                  <log-start>yes</log-start>
                 </entry>
               </rules>
             </security>
