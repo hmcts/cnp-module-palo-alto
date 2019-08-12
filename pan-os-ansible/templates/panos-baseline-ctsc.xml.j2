@@ -431,18 +431,18 @@
             <routing-table>
               <ip>
                 <static-route>
-                  <entry name="gateway">
+                  <entry name="default">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.150.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <interface>ethernet1/1</interface>
                     <metric>10</metric>
                     <destination>0.0.0.0/0</destination>
@@ -450,26 +450,26 @@
                       <unicast/>
                     </route-table>
                   </entry>
-                  <entry name="trust">
+                  <entry name="postfix-v3">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.149.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>10.230.0.0/23</destination>
+                    <destination>10.231.0.0/23</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
                   </entry>
-                  <entry name="trust-temp">
+                  <entry name="Azure-LB">
                     <path-monitor>
                       <enable>no</enable>
                       <failure-condition>any</failure-condition>
@@ -484,6 +484,44 @@
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
                     <destination>168.63.129.16/32</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="Build-agent">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.99.196.14/32</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="postfix-v2">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.230.0.0/23</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -641,13 +679,14 @@
                     <member>trust</member>
                   </to>
                   <from>
-                    <member>untrust</member>
+                    <member>trust</member>
                   </from>
                   <source>
                     <member>10.99.196.14</member>
                   </source>
                   <destination>
                     <member>10.230.0.0/23</member>
+                    <member>10.231.0.0/23</member>
                   </destination>
                   <source-user>
                     <member>any</member>
@@ -660,7 +699,7 @@
                     <member>ssh</member>
                   </application>
                   <service>
-                    <member>application-default</member>
+                    <member>any</member>
                   </service>
                   <hip-profiles>
                     <member>any</member>
@@ -720,6 +759,7 @@
                   </category>
                   <application>
                     <member>gmx-mail</member>
+                    <member>google-base</member>
                     <member>imap</member>
                     <member>ping</member>
                     <member>smtp</member>
@@ -755,6 +795,40 @@
                     </profiles>
                   </profile-setting>
                   <log-setting>app_insights</log-setting>
+                </entry>
+                <entry name="Internet_out" uuid="60edd11f-c25d-4ad0-be1a-437615ddfaaf">
+                  <to>
+                    <member>untrust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>dns</member>
+                    <member>google-base</member>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>any</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-start>yes</log-start>
+                  <rule-type>universal</rule-type>
                 </entry>
               </rules>
             </security>
@@ -798,6 +872,28 @@
                   </from>
                   <source>
                     <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <service>any</service>
+                </entry>
+                <entry name="trust" uuid="a17ebdeb-6ccd-4e25-b8e1-d40f6249df27">
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/2</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>trust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>10.99.196.14</member>
                   </source>
                   <destination>
                     <member>any</member>
