@@ -432,17 +432,17 @@
               <ip>
                 <static-route>
                   <entry name="default">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.150.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <interface>ethernet1/1</interface>
                     <metric>10</metric>
                     <destination>0.0.0.0/0</destination>
@@ -451,17 +451,17 @@
                     </route-table>
                   </entry>
                   <entry name="postfix-v3">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.149.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
                     <destination>10.231.0.0/23</destination>
@@ -470,17 +470,17 @@
                     </route-table>
                   </entry>
                   <entry name="Azure-LB">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.149.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
                     <destination>168.63.129.16/32</destination>
@@ -489,17 +489,17 @@
                     </route-table>
                   </entry>
                   <entry name="Build-agent">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
                     <nexthop>
                       <ip-address>10.100.149.1</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
                     </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
                     <destination>10.99.196.14/32</destination>
@@ -508,6 +508,25 @@
                     </route-table>
                   </entry>
                   <entry name="postfix-v2">
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.230.0.0/23</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="f5">
                     <path-monitor>
                       <enable>no</enable>
                       <failure-condition>any</failure-condition>
@@ -521,7 +540,7 @@
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>10.230.0.0/23</destination>
+                    <destination>10.221.0.0/16</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
