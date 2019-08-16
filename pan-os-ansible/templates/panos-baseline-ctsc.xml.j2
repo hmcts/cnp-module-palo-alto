@@ -535,6 +535,25 @@
                     </route-table>
                   </entry>
                   <entry name="f5">
+                    <nexthop>
+                      <ip-address>10.100.149.1</ip-address>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.221.0.0/16</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="f5-v2">
                     <path-monitor>
                       <enable>no</enable>
                       <failure-condition>any</failure-condition>
@@ -548,7 +567,7 @@
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>10.221.0.0/16</destination>
+                    <destination>10.220.0.0/16</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
