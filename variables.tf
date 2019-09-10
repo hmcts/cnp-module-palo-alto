@@ -23,6 +23,17 @@ variable "untrusted_vnet_resource_group" {}
 
 variable "untrusted_vnet_subnet_name" {}
 
+variable "infra_vault_name" {
+  default = ""
+}
+variable "infra_vault_resource_group" {
+  default = ""
+}
+
+variable "mgmt_vnet_subnet_name" {
+  default = "palo-mgmt"
+}
+
 variable "cluster_size" {
   default = "2"
 }
