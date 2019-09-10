@@ -114,6 +114,7 @@ resource "azurerm_storage_account" "storage_account" {
   location                 = "${var.resource_group_location}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  is_hns_enabled           = false
 }
 
 resource "azurerm_availability_set" "availability_set" {
