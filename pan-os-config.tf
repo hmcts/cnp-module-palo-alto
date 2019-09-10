@@ -21,7 +21,7 @@ data "template_file" "host_vars_template" {
 resource "null_resource" "ansible_hosts" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     output = "vm${count.index} ip_address=127.0.0.1"
   }
 }
@@ -33,7 +33,7 @@ locals {
 data "template_file" "inventory_template" {
   template = "${file("${path.module}/templates/inventory.ini.template")}"
 
-  vars {
+  vars = {
     hosts = "${local.ansible_hosts_list}"
   }
 }
@@ -83,7 +83,7 @@ resource "null_resource" "panos_settings" {
 resource "null_resource" "untrusted_ips_fqdn" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     fqdn = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
   }
 }
@@ -91,7 +91,7 @@ resource "null_resource" "untrusted_ips_fqdn" {
 resource "null_resource" "untrusted_ips_ip_address" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     ipAddress = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
   }
 }
@@ -99,7 +99,7 @@ resource "null_resource" "untrusted_ips_ip_address" {
 resource "null_resource" "trusted_ips_fqdn" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     fqdn = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
   }
 }
