@@ -2,7 +2,7 @@ data "template_file" "host_vars_template" {
   template = "${file("${path.module}/templates/host_vars.yml.template")}"
   count    = "${var.cluster_size}"
 
-  vars {
+  vars = {
     mgmt_ip                  = "${element(azurerm_network_interface.mgmt_nic.*.private_ip_address, count.index)}"
     trusted_ip               = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
     untrusted_ip             = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
