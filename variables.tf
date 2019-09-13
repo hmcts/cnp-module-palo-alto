@@ -26,6 +26,7 @@ variable "untrusted_vnet_subnet_name" {}
 variable "infra_vault_name" {
   default = ""
 }
+
 variable "infra_vault_resource_group" {
   default = ""
 }
