@@ -54,11 +54,19 @@ resource "null_resource" "panos_settings" {
     command = <<EOF
                 PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
-
+                if [ ! -d "${path.module}/venv" ]; then
+                    pip install --user virtualenv
+                    virtualenv ${path.module}/venv
+                fi
+                source ${path.module}/venv/bin/activate
                 pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
+                virtualenv --relocatable ${path.module}/venv
+
+                # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
+                cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
 
                 ansible-galaxy install -r ${path.module}/pan-os-ansible/requirements.yml --roles-path=${path.module}/roles
-                ANSIBLE_ROLES_PATHANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini ${path.module}/pan-os-ansible/playbook.yml
+                ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
               EOF
   }
 
