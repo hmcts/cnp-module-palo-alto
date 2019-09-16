@@ -3,6 +3,7 @@ resource "azurerm_resource_group" "resource_group" {
   location = "${var.resource_group_location}"
 
   tags = "${var.common_tags}"
+  depends_on    = ["null_resource.dependency_getter"]
 }
 
 locals {
