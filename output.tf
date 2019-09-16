@@ -59,3 +59,7 @@ output "trusted_subnet_id" {
 output "untrusted_subnet_id" {
   value = "${data.azurerm_subnet.untrusted_subnet.id}"
 }
+
+output "pan_resource_group" {
+  value = "${azurerm_resource_group.resource_group.id}"
+}
