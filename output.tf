@@ -63,3 +63,7 @@ output "untrusted_subnet_id" {
 output "pan_resource_group" {
   value = "${azurerm_resource_group.resource_group.id}"
 }
+
+output "ilb_private_ip_address" {
+  value = "${azurerm_lb.palo_ilb.private_ip_address}"
+}
