@@ -29,7 +29,7 @@
         status_code: 200
         register: result
         until: result.status == 200
-        retries: 600
+        retries: 1200
         delay: 1
         validate_certs: false
         ignore_errors: yes
