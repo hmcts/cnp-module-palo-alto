@@ -1,10 +1,10 @@
-resource "azurerm_resource_group" "resource_group" {
-  name     = "${var.product}-pan-${var.env}"
-  location = "${var.resource_group_location}"
+#resource "azurerm_resource_group" "resource_group" {
+  #name     = "${var.product}-pan-${var.env}"
+  #location = "${var.resource_group_location}"
 
-  tags = "${var.common_tags}"
-  depends_on    = ["null_resource.dependency_getter"]
-}
+  #tags = "${var.common_tags}"
+  #depends_on    = ["null_resource.dependency_getter"]
+#}
 
 locals {
   infraVaultName = "infra-vault-${var.subscription}"
