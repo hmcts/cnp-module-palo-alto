@@ -291,5 +291,5 @@ resource "azurerm_network_interface_backend_address_pool_association" "nic_trust
   network_interface_id    = "${element(azurerm_network_interface.trusted_nic.*.id, count.index)}"
   ip_configuration_name   = "${var.product}-pan-trusted"
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool.id}"
-  count                   = "2"
+  count               		= "${var.cluster_size}"
 }
