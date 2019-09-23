@@ -69,3 +69,5 @@ variable "pip_ansible_version" {
 variable "pip_netaddr_version" {
   default = "0.7.19"
 }
+
+variable "resource_group_name" {}
