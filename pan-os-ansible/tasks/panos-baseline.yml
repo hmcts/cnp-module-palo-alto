@@ -3,6 +3,10 @@
       var:
         mgmt_ip
 
+  - name: Debug PANOS creds
+    debug:
+      msg: "PANOS username is {{ username }}, password is {{ password }}"
+
   - name: hash password
     panos_op:
       ip_address: '{{ mgmt_ip }}'
