@@ -450,25 +450,6 @@
                       <unicast/>
                     </route-table>
                   </entry>
-                  <entry name="postfix-v3">
-                    <nexthop>
-                      <ip-address>{{ trusted_nexthop }}</ip-address>
-                    </nexthop>
-                    <bfd>
-                      <profile>None</profile>
-                    </bfd>
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
-                    <interface>ethernet1/2</interface>
-                    <metric>10</metric>
-                    <destination>10.231.0.0/23</destination>
-                    <route-table>
-                      <unicast/>
-                    </route-table>
-                  </entry>
                   <entry name="Azure-LB">
                     <nexthop>
                       <ip-address>{{ trusted_nexthop }}</ip-address>
@@ -541,25 +522,6 @@
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
                     <destination>10.221.0.0/16</destination>
-                    <route-table>
-                      <unicast/>
-                    </route-table>
-                  </entry>
-                  <entry name="f5-v2">
-                    <path-monitor>
-                      <enable>no</enable>
-                      <failure-condition>any</failure-condition>
-                      <hold-time>2</hold-time>
-                    </path-monitor>
-                    <nexthop>
-                      <ip-address>{{ trusted_nexthop }}</ip-address>
-                    </nexthop>
-                    <bfd>
-                      <profile>None</profile>
-                    </bfd>
-                    <interface>ethernet1/2</interface>
-                    <metric>10</metric>
-                    <destination>10.220.0.0/16</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
