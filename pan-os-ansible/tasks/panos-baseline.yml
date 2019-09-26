@@ -3,6 +3,10 @@
       var:
         mgmt_ip
 
+  - name: Debug networks
+    debug:
+      msg: "f5_data_subnet is {{ f5_data_subnet }}, f5_mgmt_subnet is {{ f5_mgmt_subnet }}, postfix_data_subnet is {{ postfix_data_subnet }}, postfix_data_subnet is {{ postfix_data_subnet }}"
+
   - name: Debug PANOS creds
     debug:
       msg: "PANOS username is {{ username }}, password is {{ password }}"
