@@ -69,5 +69,8 @@ variable "pip_ansible_version" {
 variable "pip_netaddr_version" {
   default = "0.7.19"
 }
-
 variable "resource_group_name" {}
+variable "f5_data_subnet" {}
+variable "f5_mgmt_subnet" {}
+variable "postfix_data_subnet" {}
+variable "postfix_mgmt_subnet" {}
