@@ -441,7 +441,7 @@
                 <static-route>
                   <entry name="default">
                     <nexthop>
-                      <ip-address>10.100.150.1</ip-address>
+                      <ip-address>{{ untrusted_nexthop }}</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -479,7 +479,7 @@
                   </entry>
                   <entry name="Azure-LB">
                     <nexthop>
-                      <ip-address>10.100.149.1</ip-address>
+                      <ip-address>{{ trusted_nexthop }}</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -498,7 +498,7 @@
                   </entry>
                   <entry name="Build-agent">
                     <nexthop>
-                      <ip-address>10.100.149.1</ip-address>
+                      <ip-address>{{ trusted_nexthop }}</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -517,7 +517,7 @@
                   </entry>
                   <entry name="postfix-v2">
                     <nexthop>
-                      <ip-address>10.100.149.1</ip-address>
+                      <ip-address>{{ trusted_nexthop }}</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -536,7 +536,7 @@
                   </entry>
                   <entry name="f5">
                     <nexthop>
-                      <ip-address>10.100.149.1</ip-address>
+                      <ip-address>{{ trusted_nexthop }}</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
@@ -560,7 +560,7 @@
                       <hold-time>2</hold-time>
                     </path-monitor>
                     <nexthop>
-                      <ip-address>10.100.149.1</ip-address>
+                      <ip-address>{{ trusted_nexthop }}</ip-address>
                     </nexthop>
                     <bfd>
                       <profile>None</profile>
