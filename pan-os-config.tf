@@ -15,6 +15,11 @@ data "template_file" "host_vars_template" {
     log_password             = "${data.azurerm_key_vault_secret.pan_log_password.value}"
     trusted_destination_ip   = "${var.trusted_destination_ip}"
     trusted_destination_host = "${var.trusted_destination_host}"
+    f5_data_subnet           = "${var.f5_data_subnet}"
+    f5_mgmt_subnet           = "${var.f5_mgmt_subnet}"
+    postfix_data_subnet      = "${var.postfix_data_subnet}"
+    postfix_mgmt_subnet      = "${var.postfix_mgmt_subnet}"
+
   }
 }
 
