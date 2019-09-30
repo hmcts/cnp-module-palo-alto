@@ -67,3 +67,7 @@ output "pan_resource_group" {
 output "ilb_private_ip_address" {
   value = "${azurerm_lb.palo_ilb.private_ip_address}"
 }
+
+output "public_ips" {
+  value = "${azurerm_public_ip.pip_untrusted.*.ip_address}"
+}
