@@ -2,7 +2,7 @@ data "template_file" "host_vars_template" {
   template = "${file("${path.module}/templates/host_vars.yml.template")}"
   count    = "${var.cluster_size}"
 
-  vars {
+  vars = {
     mgmt_ip                  = "${element(azurerm_network_interface.mgmt_nic.*.private_ip_address, count.index)}"
     trusted_ip               = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
     untrusted_ip             = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
@@ -26,7 +26,7 @@ data "template_file" "host_vars_template" {
 resource "null_resource" "ansible_hosts" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     output = "vm${count.index} ip_address=127.0.0.1"
   }
 }
@@ -38,7 +38,7 @@ locals {
 data "template_file" "inventory_template" {
   template = "${file("${path.module}/templates/inventory.ini.template")}"
 
-  vars {
+  vars = {
     hosts = "${local.ansible_hosts_list}"
   }
 }
@@ -72,8 +72,8 @@ resource "null_resource" "panos_settings" {
                 virtualenv --relocatable ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
-                # Dirty hack commented out, as it appears to break when the OS is not CentOS
-                # cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages
+
+                cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
 
                 ansible-galaxy install -r ${path.module}/pan-os-ansible/requirements.yml --roles-path=${path.module}/roles
                 ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml -vv
@@ -95,7 +95,7 @@ resource "null_resource" "panos_settings" {
 resource "null_resource" "untrusted_ips_fqdn" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     fqdn = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
   }
 }
@@ -103,7 +103,7 @@ resource "null_resource" "untrusted_ips_fqdn" {
 resource "null_resource" "untrusted_ips_ip_address" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     ipAddress = "${element(azurerm_network_interface.untrusted_nic.*.private_ip_address, count.index)}"
   }
 }
@@ -111,7 +111,7 @@ resource "null_resource" "untrusted_ips_ip_address" {
 resource "null_resource" "trusted_ips_fqdn" {
   count = "${var.cluster_size}"
 
-  triggers {
+  triggers = {
     fqdn = "${element(azurerm_network_interface.trusted_nic.*.private_ip_address, count.index)}"
   }
 }

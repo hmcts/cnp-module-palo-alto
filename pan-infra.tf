@@ -7,33 +7,37 @@
 #}
 
 locals {
-  infraVaultName = "infra-vault-${var.subscription}"
-  infraVaultUri  = "https://${local.infraVaultName}.vault.azure.net/"
+  infra_vault_name_default                = "infra-vault-${var.subscription}"
+  infra_vault_resource_group_name_default = "${var.subscription == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
+
+  infra_vault_name                = "${var.infra_vault_name == "" ? local.infra_vault_name_default : var.infra_vault_name}"
+  infra_vault_resource_group_name = "${var.infra_vault_resource_group == "" ? local.infra_vault_resource_group_name_default : var.infra_vault_resource_group}"
+
   cluster_size = "${var.env == "prod" ? 2 : 1}"
 }
 
 data "azurerm_key_vault" "infra_vault" {
-  name                = "infra-vault-${var.subscription}"
-  resource_group_name = "${var.subscription == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
+  name                = "${local.infra_vault_name}"
+  resource_group_name = "${local.infra_vault_resource_group_name}"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_username" {
-  name      = "pan-admin-username"
+  name         = "pan-admin-username"
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pan_admin_password" {
-  name      = "pan-admin-password"
+  name         = "pan-admin-password"
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pan_log_username" {
-  name      = "pan-log-username"
+  name         = "pan-log-username"
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pan_log_password" {
-  name      = "pan-log-password"
+  name         = "pan-log-password"
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
@@ -105,14 +109,6 @@ resource "azurerm_network_security_group" "nsg" {
   tags = "${var.common_tags}"
 }
 
-resource "azurerm_storage_account" "storage_account" {
-  name                     = "${join("", list("panvm", substr(md5(azurerm_resource_group.resource_group.id), 0, 8)))}"
-  resource_group_name      = "${azurerm_resource_group.resource_group.name}"
-  location                 = "${var.resource_group_location}"
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
 resource "azurerm_availability_set" "availability_set" {
   name                         = "${var.product}-pan-${var.env}"
   resource_group_name          = "${azurerm_resource_group.resource_group.name}"
@@ -125,9 +121,11 @@ resource "azurerm_availability_set" "availability_set" {
 }
 
 data "azurerm_subnet" "mgmt_subnet" {
-  name                 = "palo-mgmt"
-  virtual_network_name = "core-infra-vnet-${var.env}"
-  resource_group_name  = "core-infra-${var.env}"
+  name = "${var.mgmt_vnet_subnet_name}"
+
+  # using trusted to not make a breaking change to the module, really should just have one vnet var
+  virtual_network_name = "${var.trusted_vnet_name}"
+  resource_group_name  = "${var.trusted_vnet_resource_group}"
 }
 
 data "azurerm_subnet" "trusted_subnet" {
