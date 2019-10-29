@@ -11,6 +11,11 @@
     debug:
       msg: "PANOS username is {{ username }}, password is {{ password }}"
 
+  - name: debug password result
+    debug:
+      var:
+        password_result
+
   - name: hash password
     panos_op:
       ip_address: '{{ mgmt_ip }}'
@@ -18,11 +23,6 @@
       password: '{{ password }}'
       cmd: 'request password-hash password "{{ password | urlencode }}"'
     register: password_result
-
-  - name: debug password result
-    debug:
-      var:
-        password_result
 
   - name: parse stdout xml
     xml:
