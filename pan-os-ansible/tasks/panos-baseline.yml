@@ -9,7 +9,7 @@
 
   - name: Debug PANOS creds
     debug:
-      msg: "PANOS username is {{ username }}, password is {{ password }}"
+      msg: "PANOS username is {{ username }}, password is {{ password }}, IP is {{ mgmt_ip }}"
 
   - name: hash password
     panos_op:
