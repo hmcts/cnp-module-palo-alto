@@ -3,8 +3,6 @@ variable "product" {}
 variable "env" {}
 variable "subscription" {}
 
-variable "sub_full_name" {}
-
 variable "trusted_destination_ip" {
   default = ""
 }
