@@ -1,13 +1,3 @@
-output "admin_username" {
-  value     = "${var.pan_admin_username}"
-  sensitive = true
-}
-
-output "admin_password" {
-  value     = "${var.value}"
-  sensitive = true
-}
-
 output "mgmt_address_prefix" {
   value = "${data.azurerm_subnet.mgmt_subnet.address_prefix}"
 }
