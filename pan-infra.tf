@@ -7,38 +7,7 @@
 #}
 
 locals {
-  infra_vault_name_default                = "infra-vault-${var.subscription}"
-  infra_vault_resource_group_name_default = "${var.subscription == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
-
-  infra_vault_name                = "${var.infra_vault_name == "" ? local.infra_vault_name_default : var.infra_vault_name}"
-  infra_vault_resource_group_name = "${var.infra_vault_resource_group == "" ? local.infra_vault_resource_group_name_default : var.infra_vault_resource_group}"
-
   cluster_size = "${var.env == "prod" ? 2 : 1}"
-}
-
-data "azurerm_key_vault" "infra_vault" {
-  name                = "${local.infra_vault_name}"
-  resource_group_name = "${local.infra_vault_resource_group_name}"
-}
-
-data "azurerm_key_vault_secret" "pan_admin_username" {
-  name         = "pan-admin-username"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "pan_admin_password" {
-  name         = "pan-admin-password"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "pan_log_username" {
-  name         = "pan-log-username"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "pan_log_password" {
-  name         = "pan-log-password"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 resource "azurerm_network_security_group" "nsg" {
