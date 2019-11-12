@@ -1,10 +1,10 @@
 output "admin_username" {
-  value     = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
+  value     = "${var.pan_admin_username}"
   sensitive = true
 }
 
 output "admin_password" {
-  value     = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
+  value     = "${var.value}"
   sensitive = true
 }
 
