@@ -3,6 +3,20 @@ variable "product" {}
 variable "env" {}
 variable "subscription" {}
 
+
+variable "pan_admin_username" {
+  
+}
+variable "pan_admin_password" {
+  
+}
+variable "pan_log_username" {
+  
+}
+variable "pan_log_password" {
+  
+}
+
 variable "trusted_destination_ip" {
   default = ""
 }
