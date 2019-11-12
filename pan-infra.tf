@@ -200,8 +200,8 @@ resource "azurerm_virtual_machine" "pan_vm" {
 
   os_profile {
     computer_name  = "${var.product}-pan-${count.index}-${var.env}"
-    admin_username = "${var.pan_admin_username.value}"
-    admin_password = "${var.pan_admin_password.value}"
+    admin_username = "${var.pan_admin_username}"
+    admin_password = "${var.pan_admin_password}"
   }
 
   primary_network_interface_id = "${element(azurerm_network_interface.mgmt_nic.*.id, count.index)}"
