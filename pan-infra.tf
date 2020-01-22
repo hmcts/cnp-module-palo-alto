@@ -122,6 +122,8 @@ resource "azurerm_network_interface" "mgmt_nic" {
   }
 
   tags = "${var.common_tags}"
+
+  depends_on = [ "data.azurerm_subnet.mgmt_subnet" ]
 }
 
 resource "azurerm_public_ip" "pip_untrusted" {
@@ -150,6 +152,8 @@ resource "azurerm_network_interface" "untrusted_nic" {
   }
 
   tags = "${var.common_tags}"
+
+  depends_on = [ "data.azurerm_subnet.untrusted_subnet" ]
 }
 
 resource "azurerm_network_interface" "trusted_nic" {
@@ -167,6 +171,8 @@ resource "azurerm_network_interface" "trusted_nic" {
   }
 
   tags = "${var.common_tags}"
+
+  depends_on = [ "data.azurerm_subnet.trusted_subnet" ]
 }
 
 
@@ -225,6 +231,8 @@ resource "azurerm_lb" "palo_ilb" {
     subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
   }
+
+  depends_on = [ "data.azurerm_subnet.trusted_subnet" ]
 }
 
 resource "azurerm_lb_backend_address_pool" "backend_pool" {

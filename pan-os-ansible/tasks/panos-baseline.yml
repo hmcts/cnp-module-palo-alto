@@ -15,6 +15,10 @@
     debug:
       msg: "{{ password | urlencode }}"
 
+  - name: Password with urlencode
+    debug:
+      msg: "{{ password | urlencode }}"
+
   - name: hash password
     panos_op:
       ip_address: '{{ mgmt_ip }}'
