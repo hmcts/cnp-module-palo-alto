@@ -1,13 +1,3 @@
-output "admin_username" {
-  value     = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
-  sensitive = true
-}
-
-output "admin_password" {
-  value     = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
-  sensitive = true
-}
-
 output "mgmt_address_prefix" {
   value = "${data.azurerm_subnet.mgmt_subnet.address_prefix}"
 }
@@ -58,4 +48,16 @@ output "trusted_subnet_id" {
 
 output "untrusted_subnet_id" {
   value = "${data.azurerm_subnet.untrusted_subnet.id}"
+}
+
+output "pan_resource_group" {
+  value = "${azurerm_resource_group.resource_group.id}"
+}
+
+output "ilb_private_ip_address" {
+  value = "${azurerm_lb.palo_ilb.private_ip_address}"
+}
+
+output "public_ips" {
+  value = "${azurerm_public_ip.pip_untrusted.*.ip_address}"
 }

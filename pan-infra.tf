@@ -1,43 +1,13 @@
-resource "azurerm_resource_group" "resource_group" {
-  name     = "${var.product}-pan-${var.env}"
-  location = "${var.resource_group_location}"
+#resource "azurerm_resource_group" "resource_group" {
+  #name     = "${var.product}-pan-${var.env}"
+  #location = "${var.resource_group_location}"
 
-  tags = "${var.common_tags}"
-}
+  #tags = "${var.common_tags}"
+  #depends_on    = ["null_resource.dependency_getter"]
+#}
 
 locals {
-  infra_vault_name_default                = "infra-vault-${var.subscription}"
-  infra_vault_resource_group_name_default = "${var.subscription == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
-
-  infra_vault_name                = "${var.infra_vault_name == "" ? local.infra_vault_name_default : var.infra_vault_name}"
-  infra_vault_resource_group_name = "${var.infra_vault_resource_group == "" ? local.infra_vault_resource_group_name_default : var.infra_vault_resource_group}"
-
   cluster_size = "${var.env == "prod" ? 2 : 1}"
-}
-
-data "azurerm_key_vault" "infra_vault" {
-  name                = "${local.infra_vault_name}"
-  resource_group_name = "${local.infra_vault_resource_group_name}"
-}
-
-data "azurerm_key_vault_secret" "pan_admin_username" {
-  name         = "pan-admin-username"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "pan_admin_password" {
-  name         = "pan-admin-password"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "pan_log_username" {
-  name         = "pan-log-username"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "pan_log_password" {
-  name         = "pan-log-password"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -152,6 +122,18 @@ resource "azurerm_network_interface" "mgmt_nic" {
   }
 
   tags = "${var.common_tags}"
+
+  depends_on = [ "data.azurerm_subnet.mgmt_subnet" ]
+}
+
+resource "azurerm_public_ip" "pip_untrusted" {
+  name                = "${var.product}-pip-${count.index}-${var.env}"
+  location            = "${azurerm_resource_group.resource_group.location}"
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  allocation_method   = "Static"
+  tags                = "${var.common_tags}"
+  count               = "${var.cluster_size}"
+  sku                 = "Standard"
 }
 
 resource "azurerm_network_interface" "untrusted_nic" {
@@ -163,12 +145,15 @@ resource "azurerm_network_interface" "untrusted_nic" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = "${join("", list("ipconfig", "1"))}"
+    name                          = "${var.product}-pan-untrusted"
     subnet_id                     = "${data.azurerm_subnet.untrusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
+    public_ip_address_id          = "${element(azurerm_public_ip.pip_untrusted.*.id, count.index)}"
   }
 
   tags = "${var.common_tags}"
+
+  depends_on = [ "data.azurerm_subnet.untrusted_subnet" ]
 }
 
 resource "azurerm_network_interface" "trusted_nic" {
@@ -180,13 +165,16 @@ resource "azurerm_network_interface" "trusted_nic" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = "${join("", list("ipconfig", "2"))}"
+    name                          = "${var.product}-pan-trusted"
     subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
     private_ip_address_allocation = "dynamic"
   }
 
   tags = "${var.common_tags}"
+
+  depends_on = [ "data.azurerm_subnet.trusted_subnet" ]
 }
+
 
 resource "azurerm_virtual_machine" "pan_vm" {
   name                = "${var.product}-pan-${count.index}-${var.env}"
@@ -218,8 +206,8 @@ resource "azurerm_virtual_machine" "pan_vm" {
 
   os_profile {
     computer_name  = "${var.product}-pan-${count.index}-${var.env}"
-    admin_username = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
-    admin_password = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
+    admin_username = "${var.pan_admin_username}"
+    admin_password = "${var.pan_admin_password}"
   }
 
   primary_network_interface_id = "${element(azurerm_network_interface.mgmt_nic.*.id, count.index)}"
@@ -230,4 +218,53 @@ resource "azurerm_virtual_machine" "pan_vm" {
   }
 
   tags = "${var.common_tags}"
+}
+
+resource "azurerm_lb" "palo_ilb" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  name                = "${var.product}-pan-ilb"
+  location            = "${var.resource_group_location}"
+  sku                 = "Standard"
+
+  frontend_ip_configuration {
+    name                          = "LoadBalancerFrontEnd"
+    subnet_id                     = "${data.azurerm_subnet.trusted_subnet.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+
+  depends_on = [ "data.azurerm_subnet.trusted_subnet" ]
+}
+
+resource "azurerm_lb_backend_address_pool" "backend_pool" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb.id}"
+  name                = "PaloTrustBackendPool"
+}
+
+resource "azurerm_lb_rule" "all" {
+  resource_group_name             = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id                 = "${azurerm_lb.palo_ilb.id}"
+  name                            = "ALL"
+  protocol                        = "All"
+  frontend_port                   = 0
+  backend_port                    = 0
+  frontend_ip_configuration_name  = "LoadBalancerFrontEnd"
+  enable_floating_ip             = false
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.backend_pool.id}"
+  probe_id                       = "${azurerm_lb_probe.HTTPS.id}"
+}
+
+resource "azurerm_lb_probe" "HTTPS" {
+  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  loadbalancer_id     = "${azurerm_lb.palo_ilb.id}"
+  name                = "HTTPS"
+  port                = 443
+  interval_in_seconds = 5
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "nic_trust_lb" {
+  network_interface_id    = "${element(azurerm_network_interface.trusted_nic.*.id, count.index)}"
+  ip_configuration_name   = "${var.product}-pan-trusted"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.backend_pool.id}"
+  count               		= "${var.cluster_size}"
 }

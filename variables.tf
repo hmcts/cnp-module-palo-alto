@@ -3,6 +3,20 @@ variable "product" {}
 variable "env" {}
 variable "subscription" {}
 
+
+variable "pan_admin_username" {
+  
+}
+variable "pan_admin_password" {
+  
+}
+variable "pan_log_username" {
+  
+}
+variable "pan_log_password" {
+  
+}
+
 variable "trusted_destination_ip" {
   default = ""
 }
@@ -83,3 +97,8 @@ variable "pip_ansible_version" {
 variable "pip_netaddr_version" {
   default = "0.7.19"
 }
+variable "resource_group_name" {}
+variable "f5_data_subnet" {}
+variable "f5_mgmt_subnet" {}
+variable "postfix_data_subnet" {}
+variable "postfix_mgmt_subnet" {}

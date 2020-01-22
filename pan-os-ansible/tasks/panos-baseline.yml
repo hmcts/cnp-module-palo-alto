@@ -3,12 +3,28 @@
       var:
         mgmt_ip
 
+  - name: Debug networks
+    debug:
+      msg: "f5_data_subnet is {{ f5_data_subnet }}, f5_mgmt_subnet is {{ f5_mgmt_subnet }}, postfix_data_subnet is {{ postfix_data_subnet }}, postfix_data_subnet is {{ postfix_data_subnet }}"
+
+  - name: Debug PANOS creds
+    debug:
+      msg: "PANOS username is {{ username }}, password is {{ password }}, IP is {{ mgmt_ip }}"
+
+  - name: Password with urlencode
+    debug:
+      msg: "{{ password | urlencode }}"
+
+  - name: Password with urlencode
+    debug:
+      msg: "{{ password | urlencode }}"
+
   - name: hash password
     panos_op:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      cmd: 'request password-hash password "{{ password | urlencode }}"'
+      cmd: 'request password-hash password "{{ password }}"'
     register: password_result
 
   - name: debug password result
@@ -58,17 +74,17 @@
     set_fact:
       log_phash: '{{ log_phash_result.matches[0].phash }}'
 
-  - name: Create base configuration from template
+  - name: Create base configuration from template (Standard)
     template:
-      src: templates/panos-baseline.xml.j2
-      dest: "{{ playbook_dir }}/panos-baseline.xml"
+      src: templates/panos-baseline-ctsc.xml.j2
+      dest: "{{ playbook_dir }}/panos-baseline-ctsc.xml"
 
   - name: Upload base configuration
     panos_import:
       ip_address: '{{ mgmt_ip }}'
       username: '{{ username }}'
       password: '{{ password }}'
-      file: "{{ playbook_dir }}/panos-baseline.xml"
+      file: "{{ playbook_dir }}/panos-baseline-ctsc.xml"
       category: "configuration"
     register: result
 

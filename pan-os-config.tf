@@ -9,12 +9,17 @@ data "template_file" "host_vars_template" {
     mgmt_address_prefix      = "${data.azurerm_subnet.mgmt_subnet.address_prefix}"
     trusted_address_prefix   = "${data.azurerm_subnet.trusted_subnet.address_prefix}"
     untrusted_address_prefix = "${data.azurerm_subnet.untrusted_subnet.address_prefix}"
-    username                 = "${data.azurerm_key_vault_secret.pan_admin_username.value}"
-    password                 = "${data.azurerm_key_vault_secret.pan_admin_password.value}"
-    log_username             = "${data.azurerm_key_vault_secret.pan_log_username.value}"
-    log_password             = "${data.azurerm_key_vault_secret.pan_log_password.value}"
+    username                 = "${var.pan_admin_username}"
+    password                 = "${var.pan_admin_password}"
+    log_username             = "${var.pan_log_username}"
+    log_password             = "${var.pan_log_password}"
     trusted_destination_ip   = "${var.trusted_destination_ip}"
     trusted_destination_host = "${var.trusted_destination_host}"
+    f5_data_subnet           = "${var.f5_data_subnet}"
+    f5_mgmt_subnet           = "${var.f5_mgmt_subnet}"
+    postfix_data_subnet      = "${var.postfix_data_subnet}"
+    postfix_mgmt_subnet      = "${var.postfix_mgmt_subnet}"
+
   }
 }
 
@@ -52,6 +57,10 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
+                #!/bin/bash
+                
+                set -ex
+
                 PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 if [ ! -d "${path.module}/venv" ]; then
@@ -63,11 +72,14 @@ resource "null_resource" "panos_settings" {
                 virtualenv --relocatable ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
+
                 cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
 
                 ansible-galaxy install -r ${path.module}/pan-os-ansible/requirements.yml --roles-path=${path.module}/roles
-                ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
+                ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml -vv
               EOF
+
+              interpreter = ["/bin/bash", "-c"]
   }
 
   triggers = {

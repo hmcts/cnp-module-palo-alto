@@ -11,6 +11,7 @@ username: "${username}"
 password: "${password}"
 log_username: "${log_username}"
 log_password: "${log_password}"
-
-
-
+f5_data_subnet: "${f5_data_subnet}"
+f5_mgmt_subnet: "${f5_mgmt_subnet}"
+postfix_data_subnet: "${postfix_data_subnet}"
+postfix_mgmt_subnet: "${postfix_mgmt_subnet}"
