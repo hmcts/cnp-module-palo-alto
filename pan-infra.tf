@@ -206,7 +206,7 @@ resource "azurerm_virtual_machine" "pan_vm" {
     publisher = "${var.marketplace_publisher}"
     offer     = "${var.marketplace_offer}"
     sku       = "${var.marketplace_sku}"
-    version   = "latest"
+    version   = "${var.marketplace_version}"
   }
 
   storage_os_disk {
