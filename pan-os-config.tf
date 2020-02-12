@@ -59,8 +59,8 @@ resource "null_resource" "panos_settings" {
                     pip install --user virtualenv
                     virtualenv ${path.module}/venv
                 fi
-                virtualenv ${path.module}/venv
-                source ${path.module}/venv/bin/activate
+                virtualenv venv
+                source venv/bin/activate
                 pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
                 virtualenv --relocatable ${path.module}/venv
 
