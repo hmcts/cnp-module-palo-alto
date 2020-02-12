@@ -77,7 +77,7 @@ variable "common_tags" {
 }
 
 variable "pip_ansible_version" {
-  default = "2.9.4"
+  default = "2.6.4"
 }
 
 variable "pip_netaddr_version" {
