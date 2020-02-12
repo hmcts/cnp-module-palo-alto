@@ -1,3 +1,2 @@
 - src: PaloAltoNetworks.paloaltonetworks
-dependencies:
-  - json=18.2
+
