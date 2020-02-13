@@ -52,16 +52,16 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
-                PATH=${path.module}/venv1/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+                PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 pip install --upgrade pip --user virtualenv
-                if [ ! -d "${path.module}/venv1" ]; then
+                if [ ! -d "${path.module}/venv" ]; then
                     pip install --user virtualenv
-                    virtualenv ${path.module}/venv1
+                    virtualenv ${path.module}/venv
                 fi
-                virtualenv venv1
-                source venv1/bin/activate
-                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python pandevice xmltodict pytest-runner plib.stdlib ipaddress requests requests_toolbelt dnspython lxml
+                source ${path.module}/venv/bin/activate
+                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
+                virtualenv ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
                 cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
