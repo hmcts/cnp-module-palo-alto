@@ -52,15 +52,15 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
-                PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+                PATH=${path.module}/venv1/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 pip install --upgrade pip --user virtualenv
-                if [ ! -d "${path.module}/venv" ]; then
+                if [ ! -d "${path.module}/venv1" ]; then
                     pip install --user virtualenv
-                    virtualenv ${path.module}/venv
+                    virtualenv ${path.module}/venv1
                 fi
-                virtualenv venv
-                source venv/bin/activate
+                virtualenv venv1
+                source venv1/bin/activate
                 pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python pandevice xmltodict pytest-runner plib.stdlib ipaddress requests requests_toolbelt dnspython lxml
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
