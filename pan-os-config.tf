@@ -54,14 +54,13 @@ resource "null_resource" "panos_settings" {
     command = <<EOF
                 PATH=${path.module}/venv2/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
-                pip show virtualenv
-                pip install --user virtualenv
+                pip3 install --user virtualenv
                 if [ ! -d "${path.module}/venv2" ]; then
-                    pip install --user virtualenv
+                    pip3 install --user virtualenv
                     virtualenv ${path.module}/venv2
                 fi
                 source ${path.module}/venv2/bin/activate
-                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
+                pip3 install ansible==${var._ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
                 virtualenv ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
