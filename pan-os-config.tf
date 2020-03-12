@@ -64,7 +64,7 @@ resource "null_resource" "panos_settings" {
                 virtualenv ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
-                cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
+                cp -r /usr/lib64/python3.6/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python3.6/site-packages || echo "Selinux libraries not found"
 
                 ansible-galaxy install libselinux-python
                 ansible-galaxy install -r ${path.module}/pan-os-ansible/requirements.yml --roles-path=${path.module}/roles
