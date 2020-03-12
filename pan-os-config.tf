@@ -52,14 +52,14 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
-                PATH=${path.module}/venv2/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+                PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 pip3 install --user virtualenv
-                if [ ! -d "${path.module}/venv2" ]; then
+                if [ ! -d "${path.module}/venv" ]; then
                     pip3 install --user virtualenv
-                    virtualenv ${path.module}/venv2
+                    virtualenv ${path.module}/venv
                 fi
-                source ${path.module}/venv2/bin/activate
+                source ${path.module}/venv/bin/activate
                 pip3 install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
                 virtualenv ${path.module}/venv
 
@@ -67,7 +67,7 @@ resource "null_resource" "panos_settings" {
                 cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
 
                 ansible-galaxy install -r ${path.module}/pan-os-ansible/requirements.yml --roles-path=${path.module}/roles
-                ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv2/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
+                ANSIBLE_ROLES_PATH="${path.module}/roles" ansible-playbook -i ${path.module}/pan-os-ansible/inventory.ini -e ansible_python_interpreter=${path.module}/venv/bin/python2 ${path.module}/pan-os-ansible/playbook.yml
               EOF
   }
 
