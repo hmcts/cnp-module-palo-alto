@@ -54,6 +54,7 @@ resource "null_resource" "panos_settings" {
     command = <<EOF
                 PATH=${path.module}/venv2/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
+                pip show virtualenv
                 pip install --user virtualenv
                 if [ ! -d "${path.module}/venv2" ]; then
                     pip install --user virtualenv
