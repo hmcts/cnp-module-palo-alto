@@ -63,6 +63,10 @@ resource "null_resource" "panos_settings" {
                 pip3 install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml selinux
                 virtualenv --system-site-packages ${path.module}/venv
 
+                # Link selinux binding to virtual env
+                ln -s /usr/lib64/python3.6/site-packages/selinux
+                ln -s /usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so
+
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
                 cp -r /usr/lib64/python3.6/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python3.6/site-packages || echo "Selinux libraries not found"
 
