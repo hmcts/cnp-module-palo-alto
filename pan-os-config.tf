@@ -57,11 +57,11 @@ resource "null_resource" "panos_settings" {
                 pip3 install --user virtualenv
                 if [ ! -d "${path.module}/venv" ]; then
                     pip3 install --user virtualenv
-                    virtualenv ${path.module}/venv
+                    virtualenv --system-site-packages ${path.module}/venv
                 fi
                 source ${path.module}/venv/bin/activate
                 pip3 install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml selinux
-                virtualenv ${path.module}/venv
+                virtualenv --system-site-packages ${path.module}/venv
 
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
                 cp -r /usr/lib64/python3.6/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python3.6/site-packages || echo "Selinux libraries not found"
