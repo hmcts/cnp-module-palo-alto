@@ -64,6 +64,7 @@ resource "null_resource" "panos_settings" {
                 virtualenv --system-site-packages ${path.module}/venv
 
                 # Link selinux binding to virtual env
+                cd ${path.module}/venv/lib/python3.6/site-packages/
                 ln -s /usr/lib64/python3.6/site-packages/selinux
                 ln -s /usr/lib64/python3.6/site-packages/_selinux.cpython-36m-x86_64-linux-gnu.so
 
