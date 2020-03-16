@@ -52,6 +52,8 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
+               curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+               python get-pip.py
                PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 pip install --user virtualenv
