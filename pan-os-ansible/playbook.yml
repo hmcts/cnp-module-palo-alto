@@ -1,7 +1,5 @@
 - name: pan-os-configuration
   hosts: firewall
-  vars:
-    ansible_python_interpreter: /usr/bin/python
   connection: local
   gather_facts: False
   serial: 1
