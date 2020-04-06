@@ -62,7 +62,7 @@ resource "null_resource" "panos_settings" {
                     virtualenv ${path.module}/venv
                 fi
                 source ${path.module}/venv/bin/activate
-                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python requests requests_toolbelt dnspython lxml
+                pip install ansible==${var.pip_ansible_version} netaddr==${var.pip_netaddr_version} pan-python xmltodict pandevice requests requests_toolbelt dnspython lxml
                 virtualenv ${path.module}/venv
                 # dirty hack: https://dmsimard.com/2016/01/08/selinux-python-virtualenv-chroot-and-ansible-dont-play-nice/
                 cp -r /usr/lib64/python2.7/site-packages/selinux/ $${VIRTUAL_ENV}/lib/python2.7/site-packages || echo "Selinux libraries not found"
