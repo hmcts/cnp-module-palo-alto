@@ -15,6 +15,8 @@ data "template_file" "host_vars_template" {
     log_password             = "${data.azurerm_key_vault_secret.pan_log_password.value}"
     trusted_destination_ip   = "${var.trusted_destination_ip}"
     trusted_destination_host = "${var.trusted_destination_host}"
+    azure_app_insights_instrumentation_key = "${var.azure_app_insights_instrumentation_key}"
+    azure_app_insights_enable = "${var.azure_app_insights_enable}"
   }
 }
 

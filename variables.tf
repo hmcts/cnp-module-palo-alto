@@ -83,3 +83,11 @@ variable "pip_ansible_version" {
 variable "pip_netaddr_version" {
   default = "0.7.19"
 }
+
+variable "azure_app_insights_enable" {
+  default = "no"
+}
+
+variable "azure_app_insights_instrumentation_key" {
+  default = ""
+}
