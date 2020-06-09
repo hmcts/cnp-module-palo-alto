@@ -132,7 +132,7 @@
           </device>
         </role>
       </entry>
-    </admin-role>    
+    </admin-role>
   </shared>
   <devices>
     <entry name="localhost.localdomain">
@@ -903,6 +903,13 @@
                     <packet-capture>disable</packet-capture>
                   </entry>
                 </rules>
+                <threat-exception>
+                  <entry name="34805">
+                    <action>
+                       <default/>
+                    </action>
+                  </entry>
+                </threat-exception>
               </entry>
             </vulnerability>
             <file-blocking>
