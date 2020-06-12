@@ -556,6 +556,11 @@
           <wildfire>
             <public-cloud-server>eu.wildfire.paloaltonetworks.com</public-cloud-server>
           </wildfire>
+          <azure-advanced-metrics>
+            <enable>{{ azure_app_insights_enable }}</enable>
+            <instrumentation-key>{{ azure_app_insights_instrumentation_key }}</instrumentation-key>
+            <update-interval>1</update-interval>
+          </azure-advanced-metrics>
         </setting>
       </deviceconfig>
       <vsys>

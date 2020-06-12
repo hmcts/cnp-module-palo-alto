@@ -11,6 +11,7 @@ username: "${username}"
 password: "${password}"
 log_username: "${log_username}"
 log_password: "${log_password}"
-
+azure_app_insights_instrumentation_key: "${azure_app_insights_instrumentation_key}"
+azure_app_insights_enable: "${azure_app_insights_enable}"
 
 
