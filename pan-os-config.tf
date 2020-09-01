@@ -52,7 +52,7 @@ resource "local_file" "inventory_file" {
 resource "null_resource" "panos_settings" {
   provisioner "local-exec" {
     command = <<EOF
-                export PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:/home/jenkins/.local/bin:$PATH
+                PATH=${path.module}/venv/bin:/usr/local/bin:$HOME/.local/bin:$PATH
                 export PYTHONHTTPSVERIFY=0
                 pip install --upgrade pip --user virtualenv
                 if [ ! -d "${path.module}/venv" ]; then
